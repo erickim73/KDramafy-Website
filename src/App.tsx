@@ -6,7 +6,7 @@ import {SignUp} from './pages/sign-up/signup-page'
 import {Onboarding} from './pages/onboarding/onboarding-page'
 import {Explore} from './pages/explore/explore-page'
 import {Navbar}  from './components/nav';
-import {Home} from './pages/home/home-page';
+import {Home} from './pages/home/home-main';
 
 
 function App() {

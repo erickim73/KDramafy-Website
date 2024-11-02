@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-export const Home = () => {
+export const HomePG1 = () => {
     return (
         <div className = "bg-[#081014] min-h-screen flex flex-col items-center justify-center text-white p-4 relative">
             {/* button for slogan */}
