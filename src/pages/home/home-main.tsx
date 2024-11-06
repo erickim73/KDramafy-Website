@@ -1,5 +1,6 @@
 import { GetStartedButton } from "./home-getstartedbutton"
 import { MainMessage } from "./home-mainmessage"
+import { Pictures } from "./home-pictures"
 import { SecondaryMessage } from "./home-secondarymessage"
 import {Slogan} from "./home-slogan"
 
@@ -17,6 +18,9 @@ export const Home = () => {
 
             {/* Get Started Button */}
             <GetStartedButton/>
+
+            {/* kdrama pictures */}
+            <Pictures/>
         </div>
 
 

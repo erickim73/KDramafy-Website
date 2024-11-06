@@ -46,7 +46,7 @@ const Login: React.FC = () => {
     }
 
     return (
-        <div>
+        <div className = "bg-[#081014] min-h-screen flex flex-col items-center justify-center text-white p-4 relative">
             <h2>Login</h2>
 
             <form onSubmit={loginUser}>
@@ -57,7 +57,8 @@ const Login: React.FC = () => {
                     name="email"
                     placeholder="JohnDoe@KDramafy.com"
                     value={data.email}
-                    onChange={(e) => setData({...data, email: e.target.value})}                    required
+                    onChange={(e) => setData({...data, email: e.target.value})}                    
+                    required
                 />
 
                 <label>Password</label>
@@ -66,7 +67,8 @@ const Login: React.FC = () => {
                     name="password"
                     placeholder="••••••••"
                     value={data.password}
-                    onChange={(e) => setData({...data, password: e.target.value})}                    required
+                    onChange={(e) => setData({...data, password: e.target.value})}                    
+                    required
                 />
 
                 <button type="submit">Submit</button>
