@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import axios from "axios"
 import {toast} from "react-hot-toast"
-import {useNavigate} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 
 const SignUp: React.FC = () => {
     const navigate = useNavigate()
@@ -94,7 +94,10 @@ const SignUp: React.FC = () => {
                     required
                 />
 
-                <button type="submit">Submit</button>
+                <Link to = "/onboarding">
+                    <button type="submit">Submit</button>
+                </Link>
+                
             </form>
         </div>
     )
