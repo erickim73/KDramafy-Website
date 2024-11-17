@@ -1,6 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import {useForm} from "react-hook-form"
-import {Card, CardBody, CardFooter, Typography, Button} from "@material-tailwind/react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import { motion } from "framer-motion";
+
 
 export const Onboarding = () => {
     interface KDramaPreferences {
@@ -31,9 +34,9 @@ export const Onboarding = () => {
 
     const predefinedCategories = {
         releaseYear: {
-            Classics: {minYear: "2010", maxYear: "2015"},
-            Current: {minYear: "2016", maxYear: "2021"},
-            Fresh: {minYear: "2022", maxYear: "2024"},
+            Classic: {minYear: "2010", maxYear: "2015"},
+            Current: {minYear: "2016", maxYear: "2022"},
+            New: {minYear: "2023", maxYear: "2024"},
         },
         episodes: {
             Short: {minEpisodes: "6", maxEpisodes: "12"},
@@ -67,10 +70,22 @@ export const Onboarding = () => {
     const maxNumRatings = watch("maxNumRatings")
     const selectedGenres = watch("genres") || []
 
-    const toggleGenre = (genre: string) => {
-        const updatedGenres = selectedGenres.includes(genre) ? selectedGenres.filter((g) => g !== genre) : [...selectedGenres, genre].slice(0, 3)
-        setValue("genres", updatedGenres)
-    }
+    const [selectedCards, setSelectedCards] = useState<Record<string, string>>({});
+
+    const toggleCard = (category: string, card: string, values: Record<string, string>) => {
+        setSelectedCards((prev) => {
+        const isSelected = prev[category] === card;
+        const newSelected = { ...prev, [category]: isSelected ? "" : card };
+
+        // Update form values if the card is selected
+        if (!isSelected) {
+            Object.entries(values).forEach(([key, value]) => setValue(key as keyof KDramaPreferences, value));
+        }
+
+        return newSelected;
+        });
+    };
+
     
 
     return (
@@ -80,12 +95,28 @@ export const Onboarding = () => {
                 {/* release year */}
                 <div className = "mb-4">
                     <label className = "block font-semibold mb-2"> Release Year Range </label>
+                    {/* cards for release year */}
+                    <div key="releaseYear" className="mb-4">
+                        <div className="flex flex-wrap gap-2">
+                            {Object.entries(predefinedCategories.releaseYear).map(([card, values]) => (
+                                <button
+                                    type="button"
+                                    key={card}
+                                    onClick={() => toggleCard('releaseYear', card, values)}
+                                    className={`px-4 py-2 rounded-lg ${
+                                        selectedCards.releaseYear === card ? "bg-blue-500" : "bg-gray-700"
+                                    } transition-transform transform hover:scale-105`}
+                                >
+                                    {card}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                     {/* input for release year */}
                     <div className = "flex space-x-2 text-black">
                         <input type = "text" {...register("minYear", {required: "Minimum Year is Required", validate: (value) => parseInt(value) <= parseInt(maxYear) || "Minimum Year must be less than or equal to Maximum Year"})} className = "w-1/2 px-2 py-1 border rounded-lg"/>
                         <input type = "text" {...register("maxYear", {required: "Maximum Year is Required"})} className = "w-1/2 px-2 py-1 border rounded-lg"/>
                     </div>
-
                     {/* error messages for release year */}
                     {errors.minYear && (<p className="text-red-500 text-sm">{errors.minYear.message}</p>)}
                     {errors.maxYear && (<p className="text-red-500 text-sm">{errors.maxYear.message}</p>)}
@@ -94,6 +125,25 @@ export const Onboarding = () => {
                 {/* number of episodes */}
                 <div className = "mb-4">
                     <label className = "block font-semibold mb-2"> Number of Episodes </label>
+                    {/* cards for number of episodes */}
+                    <div key="episodes" className="mb-4">
+                        <div className="flex flex-wrap gap-2">
+                            {Object.entries(predefinedCategories.episodes).map(([card, values]) => (
+                                <button
+                                    type="button"
+                                    key={card}
+                                    onClick={() => toggleCard('episodes', card, values)}
+                                    className={`px-4 py-2 rounded-lg ${
+                                        selectedCards.episodes === card ? "bg-blue-500" : "bg-gray-700"
+                                    } transition-transform transform hover:scale-105`}
+                                >
+                                    {card}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* input for number of episodes */}
                     <div className = "flex space-x-2 text-black">
                         <input type = "text" {...register("minEpisodes", {required: "Minimum Number of Episodes is Required", validate: (value) => parseInt(value) <= parseInt(maxEpisodes) || "Minimum Number of Episodes must be less than or equal to Maximum Number of Episodes"})}className = "w-1/2 px-2 py-1 border rounded-lg"/>
                         <input type = "text" {...register("maxEpisodes", {required: "Maximum Number of Episodes is Required"})}className = "w-1/2 px-2 py-1 border rounded-lg"/>
@@ -105,6 +155,24 @@ export const Onboarding = () => {
                 {/* rating */}
                 <div className = "mb-4">
                     <label className = "block font-semibold mb-2"> Rating </label>
+                    {/* cards for rating */}
+                    <div key="rating" className="mb-4">
+                        <div className="flex flex-wrap gap-2">
+                            {Object.entries(predefinedCategories.rating).map(([card, values]) => (
+                                <button
+                                    type="button"
+                                    key={card}
+                                    onClick={() => toggleCard('rating', card, values)}
+                                    className={`px-4 py-2 rounded-lg ${
+                                        selectedCards.rating === card ? "bg-blue-500" : "bg-gray-700"
+                                    } transition-transform transform hover:scale-105`}
+                                >
+                                    {card}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    {/* input for rating */}
                     <div className = "flex space-x-2 text-black">
                         <input type = "text" {...register("minRating", {required: "Minimum Rating is Required", validate: (value) => parseInt(value) <= parseInt(maxRating) || "Minimum Rating must be less than or equal to Maximum Rating"})}className = "w-1/2 px-2 py-1 border rounded-lg"/>
                         <input type = "text" {...register("maxRating", {required: "Maximum Rating is Required"})}className = "w-1/2 px-2 py-1 border rounded-lg"/>
@@ -116,6 +184,24 @@ export const Onboarding = () => {
                 {/* number of ratings */}
                 <div className = "mb-4">
                     <label className = "block font-semibold mb-2"> Number of Ratings </label>
+                    {/* cards for number of ratings */}
+                    <div key="numRatings" className="mb-4">
+                        <div className="flex flex-wrap gap-2">
+                            {Object.entries(predefinedCategories.numRatings).map(([card, values]) => (
+                                <button
+                                    type="button"
+                                    key={card}
+                                    onClick={() => toggleCard('numRatings', card, values)}
+                                    className={`px-4 py-2 rounded-lg ${
+                                        selectedCards.numRatings === card ? "bg-blue-500" : "bg-gray-700"
+                                    } transition-transform transform hover:scale-105`}
+                                >
+                                    {card}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    {/* input for number of ratings */}
                     <div className = "flex space-x-2 text-black">
                         <input type = "text" {...register("minNumRatings", {required: "Minimum Number of Ratings is Required", validate: (value) => parseInt(value) <= parseInt(maxNumRatings) || "Minimum Number of Ratings must be less than or equal to Maximum Number of Ratings"})}className = "w-1/2 px-2 py-1 border rounded-lg"/>
                         <input type = "text" {...register("maxNumRatings", {required: "Maximum Number of Ratings is Required"})}className = "w-1/2 px-2 py-1 border rounded-lg"/>
