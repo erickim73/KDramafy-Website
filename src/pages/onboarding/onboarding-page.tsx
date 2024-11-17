@@ -1,4 +1,6 @@
-import React, {useState} from "react"
+import React from "react"
+import {useForm} from "react-hook-form"
+import {Card, CardBody, CardFooter, Typography, Button} from "@material-tailwind/react";
 
 export const Onboarding = () => {
     interface KDramaPreferences {
@@ -13,8 +15,8 @@ export const Onboarding = () => {
         genres: string[];
     }
 
-    const KDramaForm: React.FC = () => {
-        const [formData, setFormData] = useState<KDramaPreferences>({
+    const {register, handleSubmit, watch, setValue, formState: {errors}} = useForm<KDramaPreferences>({
+        defaultValues: {
             minYear: "2010",
             maxYear: "2024",
             minEpisodes: "6",
@@ -24,120 +26,102 @@ export const Onboarding = () => {
             minNumRatings: "0",
             maxNumRatings: "1000000",
             genres: []
-        })
-        const [errors, setErrors] = useState<{[field: string]: string | null}>({})
-
-        const possibleGenres = ["Romance", "History", "Fantasy", "Comedy", "Thriller", "Mystery", "Action", "Crime", "Sport", "Horror"]
-
-        const updateField = (field: keyof KDramaPreferences, value: any) => {
-            setFormData({...formData, [field]: value})
         }
+    })
 
-        const handleYearChange = (field: "minYear" | "maxYear", value: string) => {
-            const numericValue = value === "" || !isNaN(+value) ? value : formData[field]
+    const predefinedCategories = {
+        releaseYear: {
+            Classics: {minYear: "2010", maxYear: "2015"},
+            Current: {minYear: "2016", maxYear: "2021"},
+            Fresh: {minYear: "2022", maxYear: "2024"},
+        },
+        episodes: {
+            Short: {minEpisodes: "6", maxEpisodes: "12"},
+            Medium: {minEpisodes: "12", maxEpisodes: "20"},
+            Long: {minEpisodes: "20", maxEpisodes: "100"},
+        },
+        rating: {
+            Medium: {minRating: "7.0", maxRating: "8.0"},
+            High: {minRating: "8.0", maxRating: "10.0"},
+        },
+        numRatings: {
+            hidden_gem: {minNumRatings: "0", maxNumRatings: "2000"},
+            Average: {minNumRatings: "2000", maxNumRatings: "5000"},
+            Popular: {minNumRatings: "5000", maxNumRatings: "575000"},
+        },
+    }
 
-            updateField(field, numericValue)
-        }
+    const possibleGenres = ["Romance", "History", "Fantasy", "Comedy", "Thriller", "Mystery", "Action", "Crime", "Sport", "Horror"]
 
-        const handleEpisodeChange = (field: "minEpisodes" | "maxEpisodes", value: string) => {
-            const numericValue = value === "" || !isNaN(+value) ? value: formData[field]
+    const onSubmit = (data: KDramaPreferences) => {
+        console.log("Submitting the data:", data)
+    }
 
-            updateField(field, numericValue)
-        }
+    const minYear = watch("minYear")
+    const maxYear = watch("maxYear")
+    const minEpisodes = watch("minEpisodes")
+    const maxEpisodes = watch("maxEpisodes")
+    const minRating = watch("minRating")
+    const maxRating = watch("maxRating")
+    const minNumRatings = watch("minNumRatings")
+    const maxNumRatings = watch("maxNumRatings")
+    const selectedGenres = watch("genres") || []
 
-        const handleRatingChange = (field: "minRating" | "maxRating", value: string) => {
-            const numericValue = value === "" || !isNaN(+value) ? value: formData[field]
+    const toggleGenre = (genre: string) => {
+        const updatedGenres = selectedGenres.includes(genre) ? selectedGenres.filter((g) => g !== genre) : [...selectedGenres, genre].slice(0, 3)
+        setValue("genres", updatedGenres)
+    }
+    
 
-            updateField(field, numericValue)
-        }
-
-        const handleNumRatingsChange = (field: "minNumRatings" | "maxNumRatings", value: string) => {
-            const numericValue = value === "" || !isNaN(+value) ? value: formData[field]
-
-            updateField(field, numericValue)
-        }
-
-
-        const handleSubmit = (e: React.FormEvent) => {
-            e.preventDefault()
-
-            const minYear = +formData.minYear || 0
-            const maxYear = +formData.maxYear || 0
-            const minEpisodes = +formData.minEpisodes || 0
-            const maxEpisodes = +formData.maxEpisodes || 0
-            const minRating = +formData.minRating || 0
-            const maxRating = +formData.maxRating || 0
-            const minNumRatings = +formData.minNumRatings || 0
-            const maxNumRatings = +formData.maxNumRatings || 0
-
-
-            const newErrors: { [key: string]: string | null } = {}
-
-            if (minYear > maxYear) {
-                newErrors.year = "Minimum year should be less than the maximum year.";
-            }
-
-            if (minEpisodes > maxEpisodes) {
-                newErrors.episodes = "Minimum episodes should be less than the maximum episodes.";
-            }
-
-            if (minRating > maxRating) {
-                newErrors.rating = "Minimum rating should be less than the maximum rating.";
-            }
-
-            if (minNumRatings > maxNumRatings) {
-                newErrors.numRatings = "Minimum number of ratings should be less than the maximum number of ratings.";
-            }
-            
-            if (Object.keys(newErrors).length > 0) {
-                setErrors(newErrors)
-                alert ("Please fix the errors before submitting")
-                return                
-            } 
-            console.log("Submitting data", formData)
-        }
-
-        return (
-        // release year, number of episodes, rating, number of ratings, genre preference
-            <form onSubmit = {handleSubmit} className = "p-8 rounded-lg shadow-lg max-w-md mx-auto">
+    return (
+    // release year, number of episodes, rating, number of ratings, genre preference
+        <div className = "bg-[#081014] min-h-screen flex flex-col items-center justify-center text-white p-4 relative">
+            <form onSubmit = {handleSubmit(onSubmit)} className = "p-8 rounded-lg shadow-lg max-w-md mx-auto">
                 {/* release year */}
                 <div className = "mb-4">
                     <label className = "block font-semibold mb-2"> Release Year Range </label>
+                    {/* input for release year */}
                     <div className = "flex space-x-2 text-black">
-                        <input type = "text" value = {formData.minYear} onChange={(e) => handleYearChange("minYear", e.target.value)} className = "w-1/2 px-2 py-1 border rounded-lg"/>
-                        <input type = "text" value = {formData.maxYear} onChange={(e) => handleYearChange("maxYear", e.target.value)} className = "w-1/2 px-2 py-1 border rounded-lg"/>
+                        <input type = "text" {...register("minYear", {required: "Minimum Year is Required", validate: (value) => parseInt(value) <= parseInt(maxYear) || "Minimum Year must be less than or equal to Maximum Year"})} className = "w-1/2 px-2 py-1 border rounded-lg"/>
+                        <input type = "text" {...register("maxYear", {required: "Maximum Year is Required"})} className = "w-1/2 px-2 py-1 border rounded-lg"/>
                     </div>
-                    {errors.year && <p className = "text-red-500 text-sm">{errors.year}</p>}
+
+                    {/* error messages for release year */}
+                    {errors.minYear && (<p className="text-red-500 text-sm">{errors.minYear.message}</p>)}
+                    {errors.maxYear && (<p className="text-red-500 text-sm">{errors.maxYear.message}</p>)}
                 </div>
 
                 {/* number of episodes */}
                 <div className = "mb-4">
                     <label className = "block font-semibold mb-2"> Number of Episodes </label>
                     <div className = "flex space-x-2 text-black">
-                        <input type = "text" value = {formData.minEpisodes} onChange={(e) => handleEpisodeChange("minEpisodes", e.target.value)} className = "w-1/2 px-2 py-1 border rounded-lg"/>
-                        <input type = "text" value = {formData.maxEpisodes} onChange={(e) => handleEpisodeChange("maxEpisodes", e.target.value)} className = "w-1/2 px-2 py-1 border rounded-lg"/>
+                        <input type = "text" {...register("minEpisodes", {required: "Minimum Number of Episodes is Required", validate: (value) => parseInt(value) <= parseInt(maxEpisodes) || "Minimum Number of Episodes must be less than or equal to Maximum Number of Episodes"})}className = "w-1/2 px-2 py-1 border rounded-lg"/>
+                        <input type = "text" {...register("maxEpisodes", {required: "Maximum Number of Episodes is Required"})}className = "w-1/2 px-2 py-1 border rounded-lg"/>
                     </div>
-                    {errors.episodes && <p className = "text-red-500 text-sm">{errors.episodes}</p>}
+                    {errors.minEpisodes && (<p className="text-red-500 text-sm">{errors.minEpisodes.message}</p>)}
+                    {errors.maxEpisodes && (<p className="text-red-500 text-sm">{errors.maxEpisodes.message}</p>)}
                 </div>
 
                 {/* rating */}
                 <div className = "mb-4">
                     <label className = "block font-semibold mb-2"> Rating </label>
                     <div className = "flex space-x-2 text-black">
-                        <input type = "text" value = {formData.minRating} onChange={(e) => handleRatingChange("minRating", e.target.value)} className = "w-1/2 px-2 py-1 border rounded-lg"/>
-                        <input type = "text" value = {formData.maxRating} onChange={(e) => handleRatingChange("maxRating", e.target.value)} className = "w-1/2 px-2 py-1 border rounded-lg"/>
+                        <input type = "text" {...register("minRating", {required: "Minimum Rating is Required", validate: (value) => parseInt(value) <= parseInt(maxRating) || "Minimum Rating must be less than or equal to Maximum Rating"})}className = "w-1/2 px-2 py-1 border rounded-lg"/>
+                        <input type = "text" {...register("maxRating", {required: "Maximum Rating is Required"})}className = "w-1/2 px-2 py-1 border rounded-lg"/>
                     </div>
-                    {errors.rating && <p className = "text-red-500 text-sm">{errors.rating}</p>}
+                    {errors.minRating && (<p className="text-red-500 text-sm">{errors.minRating.message}</p>)}
+                    {errors.maxRating && (<p className="text-red-500 text-sm">{errors.maxRating.message}</p>)}
                 </div>
 
                 {/* number of ratings */}
                 <div className = "mb-4">
                     <label className = "block font-semibold mb-2"> Number of Ratings </label>
                     <div className = "flex space-x-2 text-black">
-                        <input type = "text" value = {formData.minNumRatings} onChange={(e) => handleNumRatingsChange("minNumRatings", e.target.value)} className = "w-1/2 px-2 py-1 border rounded-lg"/>
-                        <input type = "text" value = {formData.maxNumRatings} onChange={(e) => handleNumRatingsChange("maxNumRatings", e.target.value)} className = "w-1/2 px-2 py-1 border rounded-lg"/>
+                        <input type = "text" {...register("minNumRatings", {required: "Minimum Number of Ratings is Required", validate: (value) => parseInt(value) <= parseInt(maxNumRatings) || "Minimum Number of Ratings must be less than or equal to Maximum Number of Ratings"})}className = "w-1/2 px-2 py-1 border rounded-lg"/>
+                        <input type = "text" {...register("maxNumRatings", {required: "Maximum Number of Ratings is Required"})}className = "w-1/2 px-2 py-1 border rounded-lg"/>
                     </div>
-                    {errors.numRatings && <p className = "text-red-500 text-sm">{errors.numRatings}</p>}
+                    {errors.minNumRatings && (<p className="text-red-500 text-sm">{errors.minNumRatings.message}</p>)}
+                    {errors.maxNumRatings && (<p className="text-red-500 text-sm">{errors.maxNumRatings.message}</p>)}
                 </div>
 
                 {/* submit button */}
@@ -145,12 +129,6 @@ export const Onboarding = () => {
                     Submit
                 </button>
             </form>
-        )
-    }
-    
-    return (
-        <div className = "bg-[#081014] min-h-screen flex flex-col items-center  text-white p-4 relative">
-            <KDramaForm/>
         </div>
     )
 }
