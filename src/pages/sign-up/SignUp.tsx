@@ -3,57 +3,70 @@ import axios from "axios"
 import {toast} from "react-hot-toast"
 import {Link, useNavigate} from "react-router-dom"
 
+interface RegisterResponse {
+    error?: string;
+    access_token?: string;
+}
+
 const SignUp: React.FC = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [data, setData] = useState({
         firstName: "",
         lastName: "",
         email: "",
         password: "",
-    })
+    });
 
-    interface RegisterResponse {
-        error?: string
-    }
-
-    // Event handler for form input changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setData(prevData => ({ ...prevData, [name]: value }))
-    }
+        const { name, value } = e.target;
+        setData((prevData) => ({ ...prevData, [name]: value }));
+    };
 
-    // Event handler for form submission
     const registerUser = async (e: React.FormEvent) => {
-        e.preventDefault()
-        const {firstName, lastName, email, password} = data
+        e.preventDefault();
+        console.log("Registering user")
+
+        const { firstName, lastName, email, password } = data;
+        console.log("Form data:", data);
+
         try {
-            const {data} = await axios.post<RegisterResponse>('/signup', {
-                firstName, lastName, email, password
-            })
-            if (data.error) {
-                toast.error(data.error)
-            } else {
-                setData ({
-                    firstName: "",
-                    lastName: "",
-                    email: "",
-                    password: "",
-                })
-                toast.success('Login Successful. Welcome!')
-                navigate("/onboarding")
+            const response = await axios.post<RegisterResponse>("/signup", {
+                firstName,
+                lastName,
+                email,
+                password,
+            });
+
+            console.log("Backend response:", response.data);
+
+            if (response.data.error) {
+                toast.error(response.data.error);
+                return;
             }
-        } catch (error) {
-            console.log(error)
+
+            if (response.data.access_token) {
+                localStorage.setItem("jwt", response.data.access_token);
+            }
+
+
+            toast.success("Account created! Redirecting to login...");
+            setData({ firstName: "", lastName: "", email: "", password: "" });
+            navigate("/onboarding");
+        } catch (error: any) {
+            if (error.response?.data?.error) {
+                toast.error(error.response.data.error);
+            } else {
+                toast.error("Something went wrong. Please try again.");
+            }
+            console.error("Signup error:", error);
         }
-        // Log form data or handle it as needed
-        console.log("User Data:", data)
-    }
+    }; 
 
     return (
         <div>
             <h2>Sign Up</h2>
 
-            <form onSubmit={registerUser}>
+            <form onSubmit={(e) => { console.log("Form submitted"); registerUser(e); }}>
                 <label>First Name</label>
                 <input
                     type="text"
@@ -94,9 +107,7 @@ const SignUp: React.FC = () => {
                     required
                 />
 
-                <Link to = "/onboarding">
                     <button type="submit">Submit</button>
-                </Link>
                 
             </form>
         </div>

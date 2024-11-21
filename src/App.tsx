@@ -1,17 +1,18 @@
 import React from 'react';
 import './App.css';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom"
-import Login from './pages/login/login-page';
-import SignUp from './pages/sign-up/signup-page'
-import {Onboarding} from './pages/onboarding/onboarding-page'
+import Login from './pages/login/Login';
+import SignUp from './pages/sign-up/SignUp'
+import {Onboarding} from './pages/onboarding/Onboarding'
 import {Explore} from './pages/explore/explore-page'
 import {Navbar}  from './components/nav';
-import {Home} from './pages/home/home-main';
+import {Home} from './pages/home/Home';
 import axios from 'axios'
 import {Toaster} from "react-hot-toast"
 import { UserContextProvider } from './context/userContext';
 
-axios.defaults.baseURL = "http://localhost:8000"
+
+axios.defaults.baseURL = "http://127.0.0.1:5000";
 
 
 function App() {

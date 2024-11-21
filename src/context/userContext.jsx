@@ -1,21 +1,24 @@
-import axios from 'axios'
-import {createContext, useState, useEffect} from "react"
+import axios from 'axios';
+import { createContext, useState, useEffect } from "react";
 
-export const UserContext = createContext({})
+export const UserContext = createContext({});
 
-export function UserContextProvider({children}) {
-    const [user, setUser] = useState(null)
+export function UserContextProvider({ children }) {
+    const [user, setUser] = useState(null);
+
     useEffect(() => {
-        if (!user) {
-            axios.post('/profile').then(({data}) => {
-                console.log(data)
-                setUser(data)
-            })
+        const tkn = localStorage.getItem("jwt");  // Retrieve JWT from localStorage
+        if (tkn) {
+            axios
+                .post('/profile', {}, { headers: { Authorization: `Bearer ${tkn}` } })  // Include token in request
+                .then(({ data }) => setUser(data))
+                .catch((err) => console.error("Error fetching profile:", err.response?.data || err.message));  // Log errors
         }
-    }, [])
+    }, []);
+
     return (
-        <UserContext.Provider value = {{user, setUser}}>
+        <UserContext.Provider value={{ user, setUser }}>
             {children}
         </UserContext.Provider>
-    )
+    );
 }
