@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import {Link} from "react-router-dom"
 import {motion} from "framer-motion"
+import { KDramaCard } from "./KDramaCard";
 
 interface User {
     email: string;
     firstName: string;
     lastName: string;
 }
-interface KDrama{
+export interface KDrama{
     name: string;
     koreanName?: string;
     releaseYear: number;
@@ -26,7 +27,7 @@ interface KDrama{
     streamingServices?: string;
 }
 
-interface RecommendationResponse{
+export interface RecommendationResponse{
     recommendations:KDrama[]
 }
 
@@ -72,69 +73,61 @@ export const Explore = () => {
     
 
     return (
-        <div className = "bg-[#081014]">
-            <h1>Explore Page</h1>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {user ? (
-                <div className="text-white rounded-lg p-6 mb-6">
-                    <h2 className="text-2xl font-semibold mb-4">Hello {user.firstName}. Here are your recommendations.</h2>
-                    {/* <p className="mb-2"><span className="font-medium">Email:</span> {user.email}</p>
-                    <p className="mb-2"><span className="font-medium">First Name:</span> {user.firstName}</p>
-                    <p className="mb-2"><span className="font-medium">Last Name:</span> {user.lastName}</p> */}
-                </div>
+        <div className="bg-[#081014] min-h-screen text-white">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center py-8"
+          >
+          </motion.div>
+    
+          {error && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-red-500 text-center mb-4"
+            >
+              {error}
+            </motion.p>
+          )}
+    
+          {user ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-white rounded-lg p-6 mb-6 bg-opacity-20 backdrop-filter backdrop-blur-lg mx-4"
+            >
+              <h1 className="text-4xl font-bold text-center mb-2">
+                Hello {user.firstName}. Here are your recommendations.
+              </h1>
+            </motion.div>
+          ) : (
+            !error && <p className="text-center">Loading...</p>
+          )}
+    
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8">
+            {recommendations.length > 0 ? (
+              recommendations.map((kdrama, index) => <KDramaCard key={index} kdrama={kdrama} />)
             ) : (
-                !error && <p>Loading...</p>
+              <p className="col-span-full text-center">No recommendations to display.</p>
             )}
-            
-            <div>
-                {error && <p style={{ color: "red" }}>{error}</p>}
-                <div>
-                    {error && <p style={{ color: "red" }}>{error}</p>}
-                    <h2>Recommended KDramas</h2>
-                    <div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ml-8 mr-8">
-                {recommendations.length > 0 ? (
-                recommendations.map((kdrama, index) => (
-                        <div key={index} className="bg-white shadow-lg rounded-xl overflow-hidden">
-                                <img
-                                    src={kdrama["Poster Link"]}
-                                    alt={`${kdrama.Name} Poster`}
-                                    className="w-full h-96 object-cover"
-                                />
-                                <div className="p-4">
-                                    <h3 className="text-xl font-semibold mb-2">{kdrama.Name} ({kdrama["Korean Name"]})</h3>
-                                    <p className="text-sm mb-1">
-                                    <span className="font-medium">Year:</span> {kdrama["Release Year"]}
-                                    </p>
-                                    <p className="text-sm mb-1">
-                                    <span className="font-medium">Rating:</span> {kdrama.Rating} ⭐ ({kdrama["Number of Ratings"]})
-                                    </p>
-                                    <p className="text-sm mb-1">
-                                    <span className="font-medium">Episodes:</span> {kdrama.Episodes}
-                                    </p>
-                                    <p className="text-sm mb-2">
-                                    <span className="font-medium">Genres:</span> {kdrama.Genres}
-                                    </p>
-                                    <p className="text-sm line-clamp-3">{kdrama.Description}</p>
-                                    <p className="text-sm mb-2 mt-2">
-                                        <span className="font-medium">Streaming Services:</span> {kdrama["Streaming Services"]}
-                                    </p>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <p>No recommendations to display.</p>
-                    )}
-                    </div>
-                </div>
-            </div>
-            
-            <div>
-                <Link to = "/onboarding" className = "border m-5 border-black">
-                    <button>
-                        Onboarding
-                    </button>
-                </Link>
-            </div>
+          </div>
+    
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="text-center mt-12"
+          >
+            <Link
+              to="/onboarding"
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full transition duration-300 inline-block"
+            >
+              Go to Onboarding
+            </Link>
+          </motion.div>
         </div>
-    )
+      );
 }
