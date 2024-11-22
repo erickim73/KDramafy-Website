@@ -36,7 +36,7 @@ const Login: React.FC = () => {
             localStorage.setItem("jwt", access_token);
             setData({ email: "", password: "" });
             toast.success("Login successful! Redirecting...");
-            navigate("/explore");
+            navigate("/onboarding");
         } catch (error: any) {
             if (error.response?.data?.error) {
                 toast.error(error.response.data.error);

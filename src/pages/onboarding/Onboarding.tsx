@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import {useForm} from "react-hook-form"
 import { motion } from "framer-motion"
+import axios from "axios"
 import Card from "@mui/material/Card"
 import CardContent from "@mui/material/CardContent"
 
@@ -10,11 +11,13 @@ interface KDramaPreferences {
     maxYear: string;
     minEpisodes: string;
     maxEpisodes: string;
-    minRating: string;
-    maxRating: string;
     minNumRatings: string;
     maxNumRatings: string
     genres: string[];
+}
+
+interface RecommendationsResponse {
+    recommendations: any[]
 }
 
 export const Onboarding = () => {
@@ -26,10 +29,8 @@ export const Onboarding = () => {
             maxYear: "2024",
             minEpisodes: "6",
             maxEpisodes: "100",
-            minRating: "0.0",
-            maxRating: "10.0",
             minNumRatings: "0",
-            maxNumRatings: "1000000",
+            maxNumRatings: "600000",
             genres: []
         }
     })
@@ -45,34 +46,66 @@ export const Onboarding = () => {
             Medium: {minEpisodes: "12", maxEpisodes: "20"},
             Long: {minEpisodes: "20", maxEpisodes: "100"},
         },
-        rating: {
-            Medium: {minRating: "7.0", maxRating: "8.0"},
-            High: {minRating: "8.0", maxRating: "10.0"},
-        },
         numRatings: {
             Unknown: {minNumRatings: "0", maxNumRatings: "2000"},
             Average: {minNumRatings: "2000", maxNumRatings: "5000"},
-            Popular: {minNumRatings: "5000", maxNumRatings: "575000"},
+            Popular: {minNumRatings: "5000", maxNumRatings: "600000"},
         },
     }
 
     const possibleGenres = ["Romance", "History", "Fantasy", "Comedy", "Thriller", "Mystery", "Action", "Crime", "Sport", "Horror"]
 
-    const onSubmit = (data: KDramaPreferences) => {
-        console.log("Submitting the data:", data)
-    }
 
-    const maxYear = watch("maxYear")
-    const maxEpisodes = watch("maxEpisodes")
-    const maxRating = watch("maxRating")
-    const maxNumRatings = watch("maxNumRatings")
 
     const [selectedCards, setSelectedCards] = useState<Record<string, string[]>>({
         releaseYear: [],
         episodes: [],
-        rating: [],
         numRatings: []
-      })
+    })
+
+    const onSubmit = async (data: KDramaPreferences) => {
+        console.log("Submitting Data: ", data)
+
+        const transformedData = {
+            ...data,
+            minYear: parseInt(data.minYear),
+            maxYear: parseInt(data.maxYear),
+            minEpisodes: parseInt(data.minEpisodes),
+            maxEpisodes: parseInt(data.maxEpisodes),
+            minNumRatings: parseInt(data.minNumRatings),
+            maxNumRatings: parseInt(data.maxNumRatings),
+        };
+
+        const access_token = localStorage.getItem('jwt')
+        if (!access_token) {
+            alert("You must be logged in to get recommendations.")
+            return
+        }
+
+        try {   
+            const response = await axios.post<RecommendationsResponse>(
+                "http://127.0.0.1:5000/recommend", 
+                transformedData , 
+                {
+                    headers: {
+                        Authorization: `Bearer ${access_token}`,
+                    }
+                }
+            );
+
+            console.log("Recommendations received: ", response.data)
+
+            if (response.data.recommendations) {
+                localStorage.setItem("recommendations", JSON.stringify(response.data.recommendations));
+                window.location.href = "/explore";
+            } else {
+                console.log("No Recommendations Found")
+            }
+        } catch (error) {
+            console.error("Error while getting recommendations: ", error)
+            alert("Something went wrong")
+        }
+    }
 
     const toggleCard = (category: string, card: string, values: Record<string, string>) => {
         setSelectedCards((prev) => {
@@ -204,59 +237,7 @@ export const Onboarding = () => {
 
                     {errors.minEpisodes && (<p className="text-red-500 text-sm">{errors.minEpisodes.message}</p>)}
                     {errors.maxEpisodes && (<p className="text-red-500 text-sm">{errors.maxEpisodes.message}</p>)}
-                </div>
-
-
-                {/* rating */}
-                <div className = "mb-8">
-                    <label className = "block font-semibold mb-2 text-xl"> Rating </label>
-                    {/* cards for rating */}
-                    <div key="rating" className="mb-4">
-                        <div className="flex flex-wrap gap-2">
-                            {Object.entries(predefinedCategories.rating).map(([card, values]) => (
-                                <motion.button
-                                    type="button"
-                                    key={card}
-                                    onClick={() => toggleCard('rating', card, values)}
-                                    className={`px-4 py-2 rounded-lg ${selectedCards.rating.includes(card) ? "bg-[#6a5acd]" : "bg-gray-700"} transition-transform transform hover:scale-105`}
-                                    whileHover={{ scale: 1.1 }} 
-                                    whileTap={{ scale: 0.95 }}
-                                >
-                                    {card}
-                                </motion.button>
-                            ))}
-                        </div>
-                    </div>
-                    {/* input for rating */}
-                    <div className="flex space-x-4 text-black">
-                        <div className="flex flex-col w-1/2">
-                            <label className="text-white mb-1">Min Rating</label>
-                            <input
-                                type="text"
-                                {...register("minRating", {
-                                    required: "Minimum Rating is Required",
-                                    validate: (value) =>
-                                        parseInt(value) <= parseInt(watch("maxRating")) ||
-                                        "Minimum Rating must be less than or equal to Maximum Rating",
-                                })}
-                                className="px-2 py-1 border rounded-lg"
-                            />
-                        </div>
-                        <div className="flex flex-col w-1/2">
-                            <label className="text-white mb-1">Max Rating</label>
-                            <input
-                                type="text"
-                                {...register("maxRating", {
-                                    required: "Maximum Number of Episodes is Required",
-                                })}
-                                className="px-2 py-1 border rounded-lg"
-                            />
-                        </div>
-                    </div>
-                    {errors.minRating && (<p className="text-red-500 text-sm">{errors.minRating.message}</p>)}
-                    {errors.maxRating && (<p className="text-red-500 text-sm">{errors.maxRating.message}</p>)}
-                </div>
-
+                </div>  
 
                 {/* number of ratings */}
                 <div className = "mb-8">
@@ -287,7 +268,7 @@ export const Onboarding = () => {
                                 {...register("minNumRatings", {
                                     required: "Min Number of Ratings is Required",
                                     validate: (value) =>
-                                        parseInt(value) <= parseInt(watch("maxRating")) ||
+                                        parseInt(value) <= parseInt(watch("maxNumRatings")) ||
                                         "Minimum Number of Ratings must be less than or equal to Maximum Number of Ratings",
                                 })}
                                 className="px-2 py-1 border rounded-lg"

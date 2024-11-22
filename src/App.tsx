@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Route, Routes} from "react-router-dom"
 import Login from './pages/login/Login';
 import SignUp from './pages/sign-up/SignUp'
 import {Onboarding} from './pages/onboarding/Onboarding'
-import {Explore} from './pages/explore/explore-page'
+import {Explore} from './pages/explore/Explore'
 import {Navbar}  from './components/nav';
 import {Home} from './pages/home/Home';
 import axios from 'axios'
