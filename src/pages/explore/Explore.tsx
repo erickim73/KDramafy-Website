@@ -39,7 +39,7 @@ export const Explore = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const tkn = localStorage.getItem("jwt");
+        const tkn = localStorage.getItem("token");
         if (tkn) {
             axios
                 .post<User>('/profile', {}, { headers: { Authorization: `Bearer ${tkn}` } })
