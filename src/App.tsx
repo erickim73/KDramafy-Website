@@ -11,6 +11,7 @@ import Watchlist from './pages/watchlist/Watchlist';
 import axios from 'axios'
 import {Toaster} from "react-hot-toast"
 import { UserContextProvider } from './context/userContext';
+import Main from './pages/main/Main';
 
 
 axios.defaults.baseURL = "http://127.0.0.1:5000";
@@ -30,6 +31,7 @@ function App() {
                     <Route path = "/onboarding" element = {<Onboarding/>}/>
                     <Route path = "/explore" element = {<Explore/>}/>
                     <Route path = "/watchlist" element = {<Watchlist/>}/>
+                    <Route path = "/main" element = {<Main/>}/>
                 </Routes>
             </Router>
         </UserContextProvider>

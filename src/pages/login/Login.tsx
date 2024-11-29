@@ -36,7 +36,7 @@ const Login: React.FC = () => {
             localStorage.setItem("token", access_token);
             setData({ email: "", password: "" });
             toast.success("Login successful! Redirecting...");
-            navigate("/onboarding");
+            navigate("/main");
         } catch (error: any) {
             if (error.response?.data?.error) {
                 toast.error(error.response.data.error);
@@ -49,7 +49,7 @@ const Login: React.FC = () => {
 
     return (
         <div className="bg-[#081014] min-h-screen flex flex-col items-center justify-center text-white p-4">
-            <h2 className="text-2xl mb-4">Login</h2>
+            <h2 className="mb-4 text-2xl">Login</h2>
             <form onSubmit={loginUser} className="w-full max-w-md space-y-4">
                 <div className="flex flex-col">
                     <label htmlFor="email" className="mb-2">Email</label>
@@ -61,7 +61,7 @@ const Login: React.FC = () => {
                         value={data.email}
                         onChange={handleChange}
                         required
-                        className="p-2 rounded bg-gray-800 text-white"
+                        className="p-2 text-white bg-gray-800 rounded"
                     />
                 </div>
                 <div className="flex flex-col">
@@ -74,10 +74,10 @@ const Login: React.FC = () => {
                         value={data.password}
                         onChange={handleChange}
                         required
-                        className="p-2 rounded bg-gray-800 text-white"
+                        className="p-2 text-white bg-gray-800 rounded"
                     />
                 </div>
-                <button type="submit" className="w-full p-2 rounded bg-blue-600 hover:bg-blue-700">
+                <button type="submit" className="w-full p-2 bg-blue-600 rounded hover:bg-blue-700">
                     Login
                 </button>
             </form>
