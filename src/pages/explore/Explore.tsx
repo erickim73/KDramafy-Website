@@ -34,7 +34,6 @@ export interface RecommendationResponse{
 
 export const Explore = () => {
     const [user, setUser] = useState<User | null>(null);
-    const [KDrama, setKDrama] = useState<KDrama | null> (null)
     const [recommendations, setRecommendations] = useState<any[]>([]);
     const [error, setError] = useState<string | null>(null);
 
@@ -42,16 +41,18 @@ export const Explore = () => {
         const tkn = localStorage.getItem("token");
         if (tkn) {
             axios
-                .post<User>('/profile', {}, { headers: { Authorization: `Bearer ${tkn}` } })
-                .then(({ data }) => setUser(data))
+                .get<User>('/profile', { headers: { Authorization: `Bearer ${tkn}` } })
+                .then(({ data }) => {
+                    setUser(data);
+                    setError(null);
+                })
                 .catch((err) => {
-                    console.error("Error fetching profile:", err.response?.data || err.message);
-                    setError(err.response?.data?.error || "An error occurred");
+                    console.error("Error fetching user profile:", err.response?.data || err.message);
+                    setError(err.response?.data?.error || "Failed to fetch user profile.");
                 });
-        } else {
-            setError("No token found. Please log in.");
         }
     }, []);
+    
 
     useEffect(() => {
         const savedRecommendations = localStorage.getItem("recommendations");
@@ -78,7 +79,7 @@ export const Explore = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center py-8"
+            className="py-8 text-center"
           >
           </motion.div>
     
@@ -86,7 +87,7 @@ export const Explore = () => {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-red-500 text-center mb-4"
+              className="mb-4 text-center text-red-500"
             >
               {error}
             </motion.p>
@@ -97,9 +98,9 @@ export const Explore = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-white rounded-lg p-6 mb-6 bg-opacity-20 backdrop-filter backdrop-blur-lg mx-4"
+              className="p-6 mx-4 mb-6 text-white rounded-lg bg-opacity-20 backdrop-filter backdrop-blur-lg"
             >
-              <h1 className="text-4xl font-bold text-center mb-2">
+              <h1 className="mb-2 text-4xl font-bold text-center">
                 Hello {user.firstName}. Here are your recommendations.
               </h1>
             </motion.div>
@@ -107,11 +108,11 @@ export const Explore = () => {
             !error && <p className="text-center">Loading...</p>
           )}
     
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8">
+          <div className="grid grid-cols-1 gap-6 px-8 md:grid-cols-2 lg:grid-cols-3">
             {recommendations.length > 0 ? (
               recommendations.map((kdrama, index) => <KDramaCard key={index} kdrama={kdrama} />)
             ) : (
-              <p className="col-span-full text-center">No recommendations to display.</p>
+              <p className="text-center col-span-full">No recommendations to display.</p>
             )}
           </div>
     
@@ -119,11 +120,11 @@ export const Explore = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="text-center mt-12"
+            className="mt-12 text-center"
           >
             <Link
               to="/onboarding"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full transition duration-300 inline-block"
+              className="inline-block px-6 py-3 font-bold text-white transition duration-300 bg-blue-500 rounded-full hover:bg-blue-600"
             >
               Go to Onboarding
             </Link>

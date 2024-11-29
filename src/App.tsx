@@ -7,6 +7,7 @@ import {Onboarding} from './pages/onboarding/Onboarding'
 import {Explore} from './pages/explore/Explore'
 import {Navbar}  from './components/nav';
 import {Home} from './pages/home/Home';
+import Watchlist from './pages/watchlist/Watchlist';
 import axios from 'axios'
 import {Toaster} from "react-hot-toast"
 import { UserContextProvider } from './context/userContext';
@@ -28,6 +29,7 @@ function App() {
                     <Route path = "/signup" element = {<SignUp/>}/>
                     <Route path = "/onboarding" element = {<Onboarding/>}/>
                     <Route path = "/explore" element = {<Explore/>}/>
+                    <Route path = "/watchlist" element = {<Watchlist/>}/>
                 </Routes>
             </Router>
         </UserContextProvider>

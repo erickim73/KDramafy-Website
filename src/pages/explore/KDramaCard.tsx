@@ -1,4 +1,7 @@
 import { motion } from 'framer-motion';
+import {useState} from "react"
+import axios from "axios";
+
 
 export interface KDrama{
     Name: string;
@@ -38,80 +41,142 @@ const streamingPlatformData: Record<string, { logo: string }> = {
     }
   };
 
+  interface WatchlistResponse {
+    error?: string
+  }
+
 
 export function KDramaCard({ kdrama }: { kdrama: KDrama }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden transform transition duration-300 hover:scale-105"
-    >
-      <img
-        src={kdrama["Poster Link"]}
-        alt={`${kdrama.Name} Poster`}
-        className="w-full h-98 object-cover object-center"
-      />
-      <div className="p-4">
-        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{kdrama.Name} ({kdrama["Korean Name"]})</h3>
-        
-        <p className="text-sm mb-1 text-gray-700 dark:text-gray-300">
-          <span className="font-medium">Year:</span> {kdrama["Release Year"]}
-        </p>
-        <p className="text-sm mb-1 text-gray-700 dark:text-gray-300">
-          <span className="font-medium">Rating:</span> {kdrama.Rating} ⭐ ({kdrama["Number of Ratings"]})
-        </p>
-        <p className="text-sm mb-1 text-gray-700 dark:text-gray-300">
-          <span className="font-medium">Episodes:</span> {kdrama.Episodes}
-        </p>
-        <p className="text-sm mb-2 text-gray-700 dark:text-gray-300">
-          <span className="font-medium">Genres:</span> {kdrama.Genres}
-        </p>
-        <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3">{kdrama.Description}</p>
-        
-        {/* Streaming Services */}
-        {kdrama["Streaming Services"] && (
-          <div className="mt-4">
-            <span className="text-sm font-semibold mb-2 text-gray-800 dark:text-white">Watch on:</span>
-            <div className="flex flex-wrap justify-left gap-4 mt-2">
-                {kdrama["Streaming Services"].split(", ").map((service, index) => {
-                const match = service.match(/Watch on (.+?) \((https?:\/\/.+?)\)/);
-                if (match) {
-                    const platform = match[1]; // Extract platform name
-                    const url = match[2]; // Extract URL
-                    const platformData = streamingPlatformData[platform];
+    const [loading, setLoading] = useState(false)
+    const [message, setMessage] = useState<string | null>(null)
+    const [isClicked, setIsClicked] = useState(false)
 
-                    return (
-                    <a
-                        key={`${platform}-${index}`}
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block ml-2"
-                    >
-                        {platformData ? (
-                            <div className = "relative w-16 h-9 mt-2 rounded-md overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200">
-                                <img
-                                src={platformData.logo}
-                                alt={`${platform} logo`}
-                                className="h-10 w-auto hover:scale-110 transition-transform duration-200"
-                            />
-                            </div>
-                        ) : (
-                        <span className="inline-block px-2 py-1 text-xs bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded">
-                            {platform}
-                        </span>
-                        )}
-                    </a>
-                    );
+
+    const handleAddToWatchlist = async () => {
+        setLoading(true)
+        setMessage(null)
+        try {
+            const token = localStorage.getItem("token")
+            if (!token) {
+                throw new Error("User not authenticated. Please log in.");
+            }
+            console.log("Sending request with token:", token);
+            console.log("KDrama being added:", kdrama);
+            
+            const response = await axios.post<WatchlistResponse>(
+                "/watchlist",
+                kdrama,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
                 }
-                return null;
-                })}
+            );
+            
+
+            console.log("Response Status:", response.status);
+            console.log("Response Data:", response.data);
+              
+            if (response.status === 201) {
+                setIsClicked(!isClicked)
+            } else {
+                setMessage(response.data.error || "Failed to add to Watchlist");
+            }
+            } catch (error: any) {
+                console.error("Error occured while adding to watchlist:", error);
+                setMessage( error.response?.data?.error || "An error occurred while adding to Watchlist");
+            } finally {
+                setLoading(false);
+            }
+          };
+  
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="overflow-hidden transition duration-300 transform bg-white shadow-lg dark:bg-gray-800 rounded-xl hover:scale-105"
+        >
+            <img
+                src={kdrama["Poster Link"]}
+                alt={`${kdrama.Name} Poster`}
+                className="object-cover object-center w-full h-98"
+            />
+            <div className="p-4">
+                <h3 className="mb-2 text-xl font-semibold text-gray-800 dark:text-white">{kdrama.Name} ({kdrama["Korean Name"]})</h3>
+            
+            <p className="mb-1 text-sm text-gray-700 dark:text-gray-300">
+                <span className="font-medium">Year:</span> {kdrama["Release Year"]}
+            </p>
+            <p className="mb-1 text-sm text-gray-700 dark:text-gray-300">
+                <span className="font-medium">Rating:</span> {kdrama.Rating} ⭐ ({kdrama["Number of Ratings"]})
+            </p>
+            <p className="mb-1 text-sm text-gray-700 dark:text-gray-300">
+                <span className="font-medium">Episodes:</span> {kdrama.Episodes}
+            </p>
+            <p className="mb-2 text-sm text-gray-700 dark:text-gray-300">
+                <span className="font-medium">Genres:</span> {kdrama.Genres}
+            </p>
+            <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3">{kdrama.Description}</p>
+
+            {/* add to watchlist button */}
+            <button
+                onClick={handleAddToWatchlist}
+                className={`px-4 py-2 rounded text-white ${isClicked ? "bg-green-500" : "bg-blue-500"} transition-colors duration-300`}
+                disabled={loading}
+            >
+                {loading ? "Processing..." : isClicked ? "Added to Watchlist" : "Add to Watchlist"}
+
+            </button>
+
+            {/* Display feedback message */}
+            {message && (
+                <p className="mt-2 text-sm text-gray-800 dark:text-white">{message}</p>
+            )}
+            
+            {/* Streaming Services */}
+            {kdrama["Streaming Services"] && (
+                <div className="mt-4">
+                <span className="mb-2 text-sm font-semibold text-gray-800 dark:text-white">Watch on:</span>
+                <div className="flex flex-wrap gap-4 mt-2 justify-left">
+                    {kdrama["Streaming Services"].split(", ").map((service, index) => {
+                    const match = service.match(/Watch on (.+?) \((https?:\/\/.+?)\)/);
+                    if (match) {
+                        const platform = match[1]; // Extract platform name
+                        const url = match[2]; // Extract URL
+                        const platformData = streamingPlatformData[platform];
+
+                        return (
+                        <a
+                            key={`${platform}-${index}`}
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block ml-2"
+                        >
+                            {platformData ? (
+                                <div className = "relative w-16 mt-2 overflow-hidden transition-shadow duration-200 rounded-md shadow-md h-9 hover:shadow-lg">
+                                    <img
+                                    src={platformData.logo}
+                                    alt={`${platform} logo`}
+                                    className="w-auto h-10 transition-transform duration-200 hover:scale-110"
+                                />
+                                </div>
+                            ) : (
+                            <span className="inline-block px-2 py-1 text-xs text-gray-800 bg-gray-200 rounded dark:bg-gray-700 dark:text-gray-200">
+                                {platform}
+                            </span>
+                            )}
+                        </a>
+                        );
+                    }
+                    return null;
+                    })}
+                </div>
             </div>
-          </div>
-        )}
-      </div>
-    </motion.div>
+            )}
+        </div>
+        </motion.div>
   );
 }
-

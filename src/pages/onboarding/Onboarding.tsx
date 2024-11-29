@@ -2,8 +2,6 @@ import React, { useState } from "react"
 import {useForm} from "react-hook-form"
 import { motion } from "framer-motion"
 import axios from "axios"
-import Card from "@mui/material/Card"
-import CardContent from "@mui/material/CardContent"
 
 
 interface KDramaPreferences {
@@ -40,16 +38,19 @@ export const Onboarding = () => {
             Classic: {minYear: "2010", maxYear: "2015"},
             Current: {minYear: "2015", maxYear: "2022"},
             New: {minYear: "2022", maxYear: "2024"},
+            "Select All": {minYear: "2010", maxYear: "2024"}
         },
         episodes: {
             Short: {minEpisodes: "6", maxEpisodes: "12"},
             Medium: {minEpisodes: "12", maxEpisodes: "20"},
             Long: {minEpisodes: "20", maxEpisodes: "100"},
+            "Select All": {minEpisodes: "6", maxEpisodes: "100"}
         },
         numRatings: {
             Unknown: {minNumRatings: "0", maxNumRatings: "2000"},
             Average: {minNumRatings: "2000", maxNumRatings: "5000"},
             Popular: {minNumRatings: "5000", maxNumRatings: "600000"},
+            "Select All": {minNumRatings: "0", maxNumRatings: "600000"}
         },
     }
 
@@ -76,7 +77,7 @@ export const Onboarding = () => {
             maxNumRatings: parseInt(data.maxNumRatings),
         };
 
-        const access_token = localStorage.getItem('jwt')
+        const access_token = localStorage.getItem('token')
         if (!access_token) {
             alert("You must be logged in to get recommendations.")
             return
@@ -133,10 +134,10 @@ export const Onboarding = () => {
     return (
     // release year, number of episodes, rating, number of ratings, genre preference
         <div className = "bg-[#081014] min-h-screen flex flex-col items-center justify-center text-white p-4 relative">
-            <form onSubmit = {handleSubmit(onSubmit)} className = "p-8 rounded-lg shadow-lg max-w-md mx-auto">
+            <form onSubmit = {handleSubmit(onSubmit)} className = "max-w-md p-8 mx-auto rounded-lg shadow-lg">
                 {/* release year */}
                 <div className = "mb-8">
-                    <label className = "block font-semibold mb-2 text-xl"> Release Year Range </label>
+                    <label className = "block mb-2 text-xl font-semibold"> Release Year Range </label>
                     {/* cards for release year */}
                     <div key="releaseYear" className="mb-4">
                         <div className="flex flex-wrap gap-2">
@@ -157,7 +158,7 @@ export const Onboarding = () => {
                     {/* input for release year */}
                     <div className="flex space-x-4 text-black">
                         <div className="flex flex-col w-1/2">
-                            <label className="text-white mb-1">Min Release Year</label>
+                            <label className="mb-1 text-white">Min Release Year</label>
                             <input
                                 type="text"
                                 {...register("minYear", {
@@ -170,7 +171,7 @@ export const Onboarding = () => {
                             />
                         </div>
                         <div className="flex flex-col w-1/2">
-                            <label className="text-white mb-1">Max Release Year</label>
+                            <label className="mb-1 text-white">Max Release Year</label>
                             <input
                                 type="text"
                                 {...register("maxYear", {
@@ -182,14 +183,14 @@ export const Onboarding = () => {
                     </div>
 
                     {/* error messages for release year */}
-                    {errors.minYear && (<p className="text-red-500 text-sm">{errors.minYear.message}</p>)}
-                    {errors.maxYear && (<p className="text-red-500 text-sm">{errors.maxYear.message}</p>)}
+                    {errors.minYear && (<p className="text-sm text-red-500">{errors.minYear.message}</p>)}
+                    {errors.maxYear && (<p className="text-sm text-red-500">{errors.maxYear.message}</p>)}
                 </div>
 
 
                 {/* number of episodes */}
                 <div className = "mb-8">
-                    <label className = "block font-semibold mb-2 text-xl"> Number of Episodes </label>
+                    <label className = "block mb-2 text-xl font-semibold"> Number of Episodes </label>
                     {/* cards for number of episodes */}
                     <div key="episodes" className="mb-4">
                         <div className="flex flex-wrap gap-2">
@@ -211,7 +212,7 @@ export const Onboarding = () => {
                     {/* input for number of episodes */}
                     <div className="flex space-x-4 text-black">
                         <div className="flex flex-col w-1/2">
-                            <label className="text-white mb-1">Min Number of Episodes</label>
+                            <label className="mb-1 text-white">Min Number of Episodes</label>
                             <input
                                 type="text"
                                 {...register("minEpisodes", {
@@ -224,7 +225,7 @@ export const Onboarding = () => {
                             />
                         </div>
                         <div className="flex flex-col w-1/2">
-                            <label className="text-white mb-1">Max Number of Episodes</label>
+                            <label className="mb-1 text-white">Max Number of Episodes</label>
                             <input
                                 type="text"
                                 {...register("maxEpisodes", {
@@ -235,13 +236,13 @@ export const Onboarding = () => {
                         </div>
                     </div>
 
-                    {errors.minEpisodes && (<p className="text-red-500 text-sm">{errors.minEpisodes.message}</p>)}
-                    {errors.maxEpisodes && (<p className="text-red-500 text-sm">{errors.maxEpisodes.message}</p>)}
+                    {errors.minEpisodes && (<p className="text-sm text-red-500">{errors.minEpisodes.message}</p>)}
+                    {errors.maxEpisodes && (<p className="text-sm text-red-500">{errors.maxEpisodes.message}</p>)}
                 </div>  
 
                 {/* number of ratings */}
                 <div className = "mb-8">
-                    <label className = "block font-semibold mb-2 text-xl"> Number of Ratings </label>
+                    <label className = "block mb-2 text-xl font-semibold"> Number of Ratings </label>
                     {/* cards for number of ratings */}
                     <div key="numRatings" className="mb-4">
                         <div className="flex flex-wrap gap-2">
@@ -262,7 +263,7 @@ export const Onboarding = () => {
                     {/* input for number of ratings */}
                     <div className="flex space-x-4 text-black">
                         <div className="flex flex-col w-1/2">
-                            <label className="text-white mb-1">Min Number of Ratings</label>
+                            <label className="mb-1 text-white">Min Number of Ratings</label>
                             <input
                                 type="text"
                                 {...register("minNumRatings", {
@@ -275,7 +276,7 @@ export const Onboarding = () => {
                             />
                         </div>
                         <div className="flex flex-col w-1/2">
-                            <label className="text-white mb-1">Max Number of Ratings</label>
+                            <label className="mb-1 text-white">Max Number of Ratings</label>
                             <input
                                 type="text"
                                 {...register("maxNumRatings", {
@@ -285,13 +286,13 @@ export const Onboarding = () => {
                             />
                         </div>
                     </div>
-                    {errors.minNumRatings && (<p className="text-red-500 text-sm">{errors.minNumRatings.message}</p>)}
-                    {errors.maxNumRatings && (<p className="text-red-500 text-sm">{errors.maxNumRatings.message}</p>)}
+                    {errors.minNumRatings && (<p className="text-sm text-red-500">{errors.minNumRatings.message}</p>)}
+                    {errors.maxNumRatings && (<p className="text-sm text-red-500">{errors.maxNumRatings.message}</p>)}
                 </div>
 
                 {/* genres */}
                 <div className="mb-8">
-                    <label className="block font-semibold mb-2 text-xl">Genres (Select up to 3)</label>
+                    <label className="block mb-2 text-xl font-semibold">Genres (Select up to 3)</label>
                     <div className="flex flex-wrap gap-2">
                         {possibleGenres.map((genre) => (
                             <motion.div

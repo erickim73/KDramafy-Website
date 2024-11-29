@@ -5,9 +5,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-        height: {
-            '98': '24.5rem',
-        },
         fontFamily: {
             sans: ["Manrope", "Montserrat", "sans-serif"],
             montserrat: ["Montserrat", "sans-serif"],

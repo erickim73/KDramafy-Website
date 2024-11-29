@@ -7,10 +7,10 @@ export function UserContextProvider({ children }) {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const tkn = localStorage.getItem("jwt");  // Retrieve JWT from localStorage
-        if (tkn) {
+        const token = localStorage.getItem("token");  
+        if (token) {
             axios
-                .post('/profile', {}, { headers: { Authorization: `Bearer ${tkn}` } })  // Include token in request
+                .get('/profile', { headers: { Authorization: `Bearer ${token}` } })  // Include token in request
                 .then(({ data }) => setUser(data))
                 .catch((err) => console.error("Error fetching profile:", err.response?.data || err.message));  // Log errors
         }

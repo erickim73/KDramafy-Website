@@ -33,7 +33,7 @@ const Login: React.FC = () => {
             }
 
             const { access_token } = response.data;
-            localStorage.setItem("jwt", access_token);
+            localStorage.setItem("token", access_token);
             setData({ email: "", password: "" });
             toast.success("Login successful! Redirecting...");
             navigate("/onboarding");

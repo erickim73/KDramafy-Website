@@ -45,7 +45,7 @@ const SignUp: React.FC = () => {
             }
 
             if (response.data.access_token) {
-                localStorage.setItem("jwt", response.data.access_token);
+                localStorage.setItem("token", response.data.access_token);
             }
 
 
