@@ -1,10 +1,6 @@
-import React, { useState } from "react"
-import axios from "axios"
-import {toast} from "react-hot-toast"
-import {Link, useNavigate} from "react-router-dom"
-
-
-
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 interface RegisterResponse {
     error?: string;
@@ -13,6 +9,7 @@ interface RegisterResponse {
 
 const SignUp: React.FC = () => {
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState({
         firstName: "",
         lastName: "",
@@ -27,123 +24,122 @@ const SignUp: React.FC = () => {
 
     const registerUser = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Registering user")
-
-        const { firstName, lastName, email, password } = data;
-        console.log("Form data:", data);
+        setIsLoading(true);
 
         try {
-            const response = await axios.post<RegisterResponse>("/signup", {
-                firstName,
-                lastName,
-                email,
-                password,
+            const response = await fetch("/api/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
             });
 
-            console.log("Backend response:", response.data);
+            const responseData: RegisterResponse = await response.json();
 
-            if (response.data.error) {
-                toast.error(response.data.error);
+            if (responseData.error) {
+                toast.error(responseData.error);
                 return;
             }
 
-            if (response.data.access_token) {
-                localStorage.setItem("token", response.data.access_token);
+            if (responseData.access_token) {
+                localStorage.setItem("token", responseData.access_token);
             }
 
-
-            toast.success("Account created! Redirecting to login...");
+            toast.success("Account created! Redirecting to onboarding...");
             setData({ firstName: "", lastName: "", email: "", password: "" });
             navigate("/onboarding");
-        } catch (error: any) {
-            if (error.response?.data?.error) {
-                toast.error(error.response.data.error);
-            } else {
-                toast.error("Something went wrong. Please try again.");
-            }
+        } catch (error) {
+            toast.error("Something went wrong. Please try again.");
             console.error("Signup error:", error);
+        } finally {
+            setIsLoading(false);
         }
-    }; 
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#081014] text-white p-4">
-            <div className="w-full max-w-xl space-y-6">
-                <div className="space-y-2 text-center">
-                    <h1 className="text-4xl font-bold tracking-tight">Create an account with KDramafy</h1>
+            <div className="w-full max-w-lg space-y-8">
+                <div className="text-center">
+                    <h1 className="mb-2 text-4xl font-bold tracking-tight">Join KDramafy!</h1>
                     <p className="text-lg text-gray-400">
-                        Hey there, sign up for the world's first all-in-one K-Drama recommendation engine and portfolio tracker!
+                        Sign up for the world's first all-in-one K-Drama recommendation engine and portfolio tracker!
                     </p>
                 </div>
-                <form onSubmit={(e) => { console.log("Form submitted"); registerUser(e); }} className="space-y-6">
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">``
-                            <label className = "text-white font-montserrat">First Name</label>
-                            <input
-                                type="text"
-                                name="firstName"
-                                placeholder="John"
-                                value={data.firstName}
-                                onChange={(e) => setData({...data, firstName: e.target.value})}
-                                required
-                                className="bg-[#1a1a1a] border-gray-800 text-white h-12"
-                            />
+                <form onSubmit={registerUser} className="space-y-6">
+                    <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <label htmlFor="firstName" className="font-semibold text-white">First Name</label>
+                                <input
+                                    id="firstName"
+                                    name="firstName"
+                                    type="text"
+                                    placeholder="John"
+                                    value={data.firstName}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full bg-[#1a1a1a] text-white h-11 rounded-lg px-4"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label htmlFor="lastName" className="font-semibold text-white">Last Name</label>
+                                <input
+                                    id="lastName"
+                                    name="lastName"
+                                    type="text"
+                                    placeholder="Doe"
+                                    value={data.lastName}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full bg-[#1a1a1a] text-white h-11 rounded-lg px-4"
+                                />
+                            </div>
                         </div>
-                
                         <div className="space-y-2">
-                            <label>Last Name</label>
+                            <label htmlFor="email" className="font-semibold text-white">Email</label>
                             <input
-                                type="text"
-                                name="lastName"
-                                placeholder="Doe"
-                                value={data.lastName}
-                                onChange={(e) => setData({...data, lastName: e.target.value})}
-                                required
-                                className="bg-[#1a1a1a] border-gray-800 text-white h-12"
-                            />
-                        </div>
-                
-                        <div className="space-y-2">
-                            <label>Email</label>
-                            <input
-                                type="email"
+                                id="email"
                                 name="email"
-                                placeholder="JohnDoe@KDramafy.com"
+                                type="email"
+                                placeholder="johndoe@kdramafy.com"
                                 value={data.email}
-                                onChange={(e) => setData({...data, email: e.target.value})}
+                                onChange={handleChange}
                                 required
-                                className="bg-[#1a1a1a] border-gray-800 text-white h-12"
+                                className="w-full bg-[#1a1a1a] text-white h-11 rounded-lg px-4"
                             />
                         </div>
-                
                         <div className="space-y-2">
-                            <label>Password</label>
+                            <label htmlFor="password" className="font-semibold text-white">Password</label>
                             <input
-                                type="password"
+                                id="password"
                                 name="password"
-                                placeholder="••••••••"
+                                type="password"
+                                placeholder="••••••••••••"
                                 value={data.password}
-                                onChange={(e) => setData({...data, password: e.target.value})}
+                                onChange={handleChange}
                                 required
-                                className="bg-[#1a1a1a] border-gray-800 text-white h-12"
+                                className="w-full bg-[#1a1a1a] text-white h-11 rounded-lg px-4"
                             />
                         </div>
-                        <button className="w-full h-12 text-lg font-medium text-black bg-white hover:bg-gray-200" onClick = {registerUser} type="submit">
-                            Submit
-                        </button>
                     </div>
+                    <button
+                        type="submit"
+                        className="w-full h-12 text-lg font-medium text-black transition-colors bg-white rounded-lg hover:bg-gray-200"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Creating Account..." : "Create Account"}
+                    </button>
                 </form>
-                <div className="text-center text-gray-400">
-                Already have an account?{" "}
-                <Link to="/login" className="text-white hover:underline">
-                    Login here.
-                </Link>
+                <div className="text-center text-gray-300">
+                    Already have an account?{" "}
+                    <Link to="/login" className="text-white underline">
+                        Log in here
+                    </Link>
                 </div>
             </div>
-                
-                    
-                
         </div>
-    )
-}
+    );
+};
 
-export default SignUp
+export default SignUp;

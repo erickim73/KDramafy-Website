@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface LoginResponse {
     access_token: string;
@@ -10,6 +10,7 @@ interface LoginResponse {
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false)
     const [data, setData] = useState({
         email: "",
         password: "",
@@ -23,6 +24,7 @@ const Login: React.FC = () => {
     const loginUser = async (e: React.FormEvent) => {
         e.preventDefault();
         const { email, password } = data;
+        setIsLoading(true)
 
         try {
             const response = await axios.post<LoginResponse>("/login", { email, password });
@@ -44,43 +46,62 @@ const Login: React.FC = () => {
                 toast.error("Something went wrong. Please try again.");
             }
             console.error("Login error:", error);
+        } finally {
+            setIsLoading(false)
         }
     };
 
     return (
-        <div className="bg-[#081014] min-h-screen flex flex-col items-center justify-center text-white p-4">
-            <h2 className="mb-4 text-2xl">Login</h2>
-            <form onSubmit={loginUser} className="w-full max-w-md space-y-4">
-                <div className="flex flex-col">
-                    <label htmlFor="email" className="mb-2">Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        placeholder="JohnDoe@KDramafy.com"
-                        value={data.email}
-                        onChange={handleChange}
-                        required
-                        className="p-2 text-white bg-gray-800 rounded"
-                    />
+        <div className="min-h-screen flex items-center justify-center bg-[#081014] text-white p-4">
+            <div className="w-full max-w-lg space-y-8">
+                <div className="text-center">
+                    <h1 className="mb-2 text-4xl font-bold tracking-tight">Welcome back to KDramafy!</h1>
+                    
                 </div>
-                <div className="flex flex-col">
-                    <label htmlFor="password" className="mb-2">Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        placeholder="••••••••"
-                        value={data.password}
-                        onChange={handleChange}
-                        required
-                        className="p-2 text-white bg-gray-800 rounded"
-                    />
+                <form onSubmit={loginUser} className="space-y-6">
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <label htmlFor="email" className="font-semibold text-white">Email</label>
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                placeholder="johndoe@kdramafy.com"
+                                value={data.email}
+                                onChange={handleChange}
+                                required
+                                className="w-full bg-[#1a1a1a] text-white h-11 rounded-lg px-4"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label htmlFor="password" className="font-semibold text-white">Password</label>
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                placeholder="••••••••••••"
+                                value={data.password}
+                                onChange={handleChange}
+                                required
+                                className="w-full bg-[#1a1a1a] text-white h-11 rounded-lg px-4"
+                            />
+                        </div>
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full h-12 text-lg font-medium text-black transition-colors bg-white rounded-lg hover:bg-gray-200"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Logging in..." : "Login"}
+                    </button>
+                </form>
+                <div className="text-center text-gray-300">
+                    Don't have an account?{" "}
+                    <Link to="/signup" className="text-white underline">
+                        Sign up here!
+                    </Link>
                 </div>
-                <button type="submit" className="w-full p-2 bg-blue-600 rounded hover:bg-blue-700">
-                    Login
-                </button>
-            </form>
+            </div>
         </div>
     );
 };

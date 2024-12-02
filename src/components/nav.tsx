@@ -19,6 +19,12 @@ export const Navbar = () => {
     }
 
     const isOnboardingPage = location.pathname === "/onboarding"
+    const isSignupPage = location.pathname === "/signup"
+    const isLoginPage = location.pathname === "/login"
+
+    if (isOnboardingPage || isSignupPage || isLoginPage) {
+        return null
+    }
     
     return (
         <nav className="sticky top-0 z-50 flex w-full items-center justify-between bg-[#091217] lg:py-6">
@@ -32,60 +38,58 @@ export const Navbar = () => {
             </div>
             {/* Right elements */}
             <div className="flex text-right">
-                {!isOnboardingPage && (
-                    isAuthenticated ? (
-                        <>
-                            <Link to="/watchlist">
-                                <button
-                                    className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
-                                    style={{
-                                        background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
-                                        padding: "8px 16px",
-                                    }}
-                                >
-                                    Watchlist
-                                </button>   
-                            </Link>
+                {isAuthenticated ? (
+                    <>
+                        <Link to="/watchlist">
                             <button
-                                onClick={handleSignOut}
+                                className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
+                                style={{
+                                    background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
+                                    padding: "8px 16px",
+                                }}
+                            >
+                                Watchlist
+                            </button>   
+                        </Link>
+                        <button
+                            onClick={handleSignOut}
+                            className="text-white rounded-xl font-medium border font-montserrat border-white px-4 py-2 mr-5 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
+                            style={{
+                                background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
+                                padding: "8px 16px",
+                            }}
+                        >
+                            Sign Out
+                        </button>
+                        
+                    </>
+                    
+                    
+                ) : (
+                    <>
+                        <Link to="/signup">
+                            <button
+                                className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
+                                style={{
+                                    background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
+                                    padding: "8px 16px",
+                                }}
+                            >
+                                Sign Up
+                            </button>
+                        </Link>
+                        <Link to="/login">
+                            <button
                                 className="text-white rounded-xl font-medium border font-montserrat border-white px-4 py-2 mr-5 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
                                 style={{
                                     background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
                                     padding: "8px 16px",
                                 }}
                             >
-                                Sign Out
+                                Login
                             </button>
-                            
-                        </>
-                        
-                        
-                    ) : (
-                        <>
-                            <Link to="/signup">
-                                <button
-                                    className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
-                                    style={{
-                                        background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
-                                        padding: "8px 16px",
-                                    }}
-                                >
-                                    Sign Up
-                                </button>
-                            </Link>
-                            <Link to="/login">
-                                <button
-                                    className="text-white rounded-xl font-medium border font-montserrat border-white px-4 py-2 mr-5 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
-                                    style={{
-                                        background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
-                                        padding: "8px 16px",
-                                    }}
-                                >
-                                    Login
-                                </button>
-                            </Link>
-                        </>
-                    )
+                        </Link>
+                    </>
                 )}
             </div>
         </nav>
