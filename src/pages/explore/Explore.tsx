@@ -115,20 +115,6 @@ export const Explore = () => {
               <p className="text-center col-span-full">No recommendations to display.</p>
             )}
           </div>
-    
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-12 text-center"
-          >
-            <Link
-              to="/onboarding"
-              className="inline-block px-6 py-3 font-bold text-white transition duration-300 bg-blue-500 rounded-full hover:bg-blue-600"
-            >
-              Go to Onboarding
-            </Link>
-          </motion.div>
         </div>
       );
 }

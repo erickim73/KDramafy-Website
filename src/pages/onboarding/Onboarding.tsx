@@ -85,7 +85,7 @@ export const Onboarding = () => {
 
         try {   
             const response = await axios.post<RecommendationsResponse>(
-                "http://127.0.0.1:5000/recommend", 
+                "https://kdramafys-753476690747.us-central1.run.app/recommend", 
                 transformedData , 
                 {
                     headers: {

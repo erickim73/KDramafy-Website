@@ -14,7 +14,7 @@ import { UserContextProvider } from './context/userContext';
 import Main from './pages/main/Main';
 
 
-axios.defaults.baseURL = "http://127.0.0.1:5000";
+axios.defaults.baseURL = "https://kdramafys-753476690747.us-central1.run.app/";
 
 
 function App() {
