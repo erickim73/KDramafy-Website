@@ -10,7 +10,8 @@ export const Navbar = () => {
     useEffect(() => {
         const token = localStorage.getItem("token")
         setIsAuthenticated(!!token) // if token exists, user is authenticated
-    }, [])
+    }, [location])
+
 
     const handleSignOut = () => {
         localStorage.removeItem("token")
@@ -27,7 +28,7 @@ export const Navbar = () => {
     }
     
     return (
-        <nav className="sticky top-0 z-50 flex w-full items-center justify-between bg-[#091217] lg:py-6">
+        <nav className="sticky top-0 z-50 flex items-center justify-between transition duration-300 ease-in-out full bg-[#081014] backdrop-blur-md lg:py-6">
             <div className="flex items-center">
                 {/* Website name */}
                 <Link to="/">
@@ -40,7 +41,7 @@ export const Navbar = () => {
             <div className="flex text-right">
                 {isAuthenticated ? (
                     <>
-                        <Link to="/watchlist">
+                        <Link to="/dashboard">
                             <button
                                 className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
                                 style={{
@@ -48,8 +49,8 @@ export const Navbar = () => {
                                     padding: "8px 16px",
                                 }}
                             >
-                                Watchlist
-                            </button>   
+                                Dashboard
+                            </button>
                         </Link>
                         <button
                             onClick={handleSignOut}
@@ -61,10 +62,10 @@ export const Navbar = () => {
                         >
                             Sign Out
                         </button>
-                        
+        
                     </>
-                    
-                    
+        
+        
                 ) : (
                     <>
                         <Link to="/signup">

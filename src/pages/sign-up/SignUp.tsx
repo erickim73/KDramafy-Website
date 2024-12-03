@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import axios from "axios";
 
 interface RegisterResponse {
     error?: string;
@@ -26,24 +27,19 @@ const SignUp: React.FC = () => {
         e.preventDefault();
         setIsLoading(true);
 
+        const {firstName, lastName, email, password} = data
+
         try {
-            const response = await fetch("/api/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
+            const response = await axios.post<RegisterResponse>("/signup", { firstName, lastName, email, password});
 
-            const responseData: RegisterResponse = await response.json();
 
-            if (responseData.error) {
-                toast.error(responseData.error);
+            if (response.data.error) {
+                toast.error(response.data.error);
                 return;
             }
 
-            if (responseData.access_token) {
-                localStorage.setItem("token", responseData.access_token);
+            if (response.data.access_token) {
+                localStorage.setItem("token", response.data.access_token);
             }
 
             toast.success("Account created! Redirecting to onboarding...");
@@ -60,7 +56,7 @@ const SignUp: React.FC = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#081014] text-white p-4">
             <div className="w-full max-w-lg space-y-8">
-                <div className="text-center">
+                <div className="text-center"> 
                     <h1 className="mb-2 text-4xl font-bold tracking-tight">Join KDramafy!</h1>
                     <p className="text-lg text-gray-400">
                         Sign up for the world's first all-in-one K-Drama recommendation engine and portfolio tracker!

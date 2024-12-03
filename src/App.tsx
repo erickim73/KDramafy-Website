@@ -11,10 +11,10 @@ import Watchlist from './pages/watchlist/Watchlist';
 import axios from 'axios'
 import {Toaster} from "react-hot-toast"
 import { UserContextProvider } from './context/userContext';
-import Main from './pages/main/Main';
+import Dashboard from './pages/dashboard/Dashboard';
 
 
-axios.defaults.baseURL = "https://kdramafys-753476690747.us-central1.run.app/";
+axios.defaults.baseURL = "https://kdramafyy-753476690747.us-central1.run.app/";
 
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
                     <Route path = "/onboarding" element = {<Onboarding/>}/>
                     <Route path = "/explore" element = {<Explore/>}/>
                     <Route path = "/watchlist" element = {<Watchlist/>}/>
-                    <Route path = "/main" element = {<Main/>}/>
+                    <Route path = "/dashboard" element = {<Dashboard/>}/>
                 </Routes>
             </Router>
         </UserContextProvider>

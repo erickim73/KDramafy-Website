@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {Link} from "react-router-dom"
 import {motion} from "framer-motion"
 import { KDramaCard } from "./KDramaCard";
 
@@ -74,7 +73,7 @@ export const Explore = () => {
     
 
     return (
-        <div className="bg-[#081014] min-h-screen text-white">
+        <div className="bg-[#081014] min-h-screen text-white scrollbar-hide">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}

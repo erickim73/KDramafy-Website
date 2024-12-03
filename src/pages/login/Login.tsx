@@ -38,7 +38,7 @@ const Login: React.FC = () => {
             localStorage.setItem("token", access_token);
             setData({ email: "", password: "" });
             toast.success("Login successful! Redirecting...");
-            navigate("/main");
+            navigate("/dashboard");
         } catch (error: any) {
             if (error.response?.data?.error) {
                 toast.error(error.response.data.error);
