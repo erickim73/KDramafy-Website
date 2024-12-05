@@ -41,7 +41,7 @@ export const Navbar = () => {
             <div className="flex text-right">
                 {isAuthenticated ? (
                     <>
-                        <Link to="/dashboard">
+                        <Link to="/home">
                             <button
                                 className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
                                 style={{
@@ -49,7 +49,29 @@ export const Navbar = () => {
                                     padding: "8px 16px",
                                 }}
                             >
-                                Dashboard
+                                Home
+                            </button>
+                        </Link>
+                        <Link to="/explore">
+                            <button
+                                className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
+                                style={{
+                                    background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
+                                    padding: "8px 16px",
+                                }}
+                            >
+                                Discover
+                            </button>
+                        </Link>
+                        <Link to="/watchlist">
+                            <button
+                                className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
+                                style={{
+                                    background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
+                                    padding: "8px 16px",
+                                }}
+                            >
+                                Watchlist
                             </button>
                         </Link>
                         <button

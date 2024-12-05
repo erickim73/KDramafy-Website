@@ -1,3 +1,4 @@
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -16,7 +17,7 @@ module.exports = {
         keyframes: {
             rotate: {
               '0%': { transform: 'rotate(0deg) scale(10)' },
-              '100%': { transform: 'rotate(-360deg) scale(10)' },
+              '100%': { transform: 'rotate(360deg) scale(10)' },
             },
         },
     },

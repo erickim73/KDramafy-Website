@@ -31,7 +31,7 @@ function App() {
                     <Route path = "/onboarding" element = {<Onboarding/>}/>
                     <Route path = "/explore" element = {<Explore/>}/>
                     <Route path = "/watchlist" element = {<Watchlist/>}/>
-                    <Route path = "/dashboard" element = {<Dashboard/>}/>
+                    <Route path = "/home" element = {<Dashboard/>}/>
                 </Routes>
             </Router>
         </UserContextProvider>

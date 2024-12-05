@@ -107,7 +107,7 @@ export const Home = () => {
 };
 
 // Background elements with animated blobs
-const BackgroundElements = () => (
+export const BackgroundElements = () => (
     <>
         <motion.div
             className="absolute top-20 left-10 w-72 h-72 bg-[#6a5acd] rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"
@@ -130,16 +130,16 @@ const BackgroundElements = () => (
 // Slogan with animated gradient text
 const Slogan = () => (
     <motion.div
-    className="relative p-[2px] rounded-full bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] mb-10 mt-10"
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.5 }}
-    >
-        <span className="block bg-[#081014] rounded-full px-6 py-2">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] font-semibold">
-            Discover Your Perfect K-Drama Today
+        className="relative p-[2px] rounded-full bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] mb-10 mt-10"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        >
+            <span className="block bg-[#081014] rounded-full px-6 py-2">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] font-semibold">
+                Discover Your Perfect K-Drama Today
+                </span>
             </span>
-        </span>
     </motion.div>
 );
 
@@ -182,14 +182,14 @@ const GetStartedButton = () => (
     >
         {/* Rotating background */}
         <motion.div
-            className="absolute inset-0 h-full w-full bg-[conic-gradient(#6a5acd_20deg,transparent_120deg)] animate-rotate rounded-full"
+            className="absolute inset-0 h-full w-full bg-[conic-gradient(#6a5acd_160deg,transparent_120deg)] animate-rotate rounded-full"
         />
         
         {/* Button container */}
         <div className="relative z-10 flex items-center justify-center w-max rounded-xl bg-slate-900 p-[2px]">
             <motion.button
-                className="font-montserrat rounded-xl font-medium px-8 py-4 transition duration-300 ease-in-out bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] text-white shadow-lg"
-                initial={{ opacity: 0, y: 20 }}
+                className="font-montserrat rounded-xl font-medium px-7 py-4 transition duration-300 ease-in-out bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] text-white shadow-lg"
+                initial={{ opacity: 0, y: 0 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7, duration: 0.5 }}
                 whileHover={{ scale: 1.05 }}
@@ -206,40 +206,51 @@ const PictureGrid = ({ pictures }: PictureGridProps) => {
     const { ref, controls } = useScrollAnimation();
   
     return (
-        <motion.div
-            ref={ref}
-            className="grid w-full max-w-6xl grid-cols-2 gap-4 py-6 mt-14 md:grid-cols-4"
-            variants={containerVariants}
-            initial="hidden"
-            animate={controls}
+        <>
+            <motion.h2
+                className="mt-16 mb-2 text-3xl font-medium text-center font-montserrat"
+                initial={{ opacity: 0, y: -25 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
             >
-            {pictures.map((picture) => (
-                <motion.div
-                    key={picture.title}
-                    className="flex flex-col items-center"
-                    variants={pictureVariants}
+                Popular Dramas
+            </motion.h2>
+            <motion.div
+                ref={ref}
+                className="grid w-full max-w-6xl grid-cols-2 gap-4 py-2 md:grid-cols-4"
+                variants={containerVariants}
+                initial="hidden"
+                animate={controls}
                 >
-                    {picture.title}
-                <motion.div
-                    className="relative w-full overflow-hidden text-center shadow-lg rounded-xl"   
-                >
-                    
-                    <img
-                    src={picture.src}
-                    alt={picture.alt}
-                    className="object-cover w-full h-full rounded-xl"
-                    />
+            
+                {pictures.map((picture) => (
+                    <motion.div
+                        key={picture.title}
+                        className="flex flex-col items-center"
+                        variants={pictureVariants}
+                    >
+                        {picture.title}
+                    <motion.div
+                        className="relative w-full overflow-hidden text-center shadow-lg rounded-xl"
+                    >
+            
+                        <img
+                        src={picture.src}
+                        alt={picture.alt}
+                        className="object-cover w-full h-full rounded-xl"
+                        />
+                    </motion.div>
+                    <motion.p
+                        className="mt-2 text-sm font-medium text-center text-gray-300"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                    >
+                    </motion.p>
                 </motion.div>
-                <motion.p
-                    className="mt-2 text-sm font-medium text-center text-gray-300"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                >
-                </motion.p>
+            ))}
             </motion.div>
-        ))}
-        </motion.div>
+        </>
     );
   };
       
