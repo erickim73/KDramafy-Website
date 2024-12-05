@@ -9,10 +9,6 @@ type Picture = {
     alt: string;
 };
 
-type PictureGridProps = {
-    pictures: Picture[];
-};
-
 // Variants for animations
 const containerVariants = {
     hidden: { opacity: 0 },

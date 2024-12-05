@@ -23,7 +23,7 @@ export const Onboarding = () => {
     
     
 
-    const {register, handleSubmit, watch, setValue, formState: {errors}} = useForm<KDramaPreferences>({
+    const {register, handleSubmit, watch, setValue} = useForm<KDramaPreferences>({
         defaultValues: {
             minYear: "2020",
             maxYear: "2024",

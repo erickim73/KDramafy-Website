@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import {motion} from "framer-motion"
 import { KDramaCard } from "./KDramaCard";
-import { TracingBeam } from "../../components/ui/tracing-beam";
 
 interface User {
     email: string;
