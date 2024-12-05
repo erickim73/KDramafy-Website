@@ -28,7 +28,7 @@ export const Navbar = () => {
     }
     
     return (
-        <nav className="sticky top-0 z-50 flex items-center justify-between transition duration-300 ease-in-out full bg-[#081014] backdrop-blur-md lg:py-6">
+        <nav className="sticky top-0 z-50 flex items-center justify-between transition duration-300 ease-in-out full bg-[#081014] lg:py-6">
             <div className="flex items-center">
                 {/* Website name */}
                 <Link to="/">
@@ -41,7 +41,7 @@ export const Navbar = () => {
             <div className="flex text-right">
                 {isAuthenticated ? (
                     <>
-                        <Link to="/home">
+                        <Link to="/dashboard">
                             <button
                                 className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
                                 style={{
@@ -49,7 +49,7 @@ export const Navbar = () => {
                                     padding: "8px 16px",
                                 }}
                             >
-                                Home
+                                Dashboard
                             </button>
                         </Link>
                         <Link to="/explore">

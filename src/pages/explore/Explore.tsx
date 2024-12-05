@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import {motion} from "framer-motion"
 import { KDramaCard } from "./KDramaCard";
+import { TracingBeam } from "../../components/ui/tracing-beam";
 
 interface User {
     email: string;
@@ -73,47 +74,46 @@ export const Explore = () => {
     
 
     return (
-        <div className="bg-[#081014] min-h-screen text-white scrollbar-hide">
-          <motion.div
+        <div className="bg-[#081014] min-h-screen text-white scrollbar-hide pb-16">
+        
+            <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="py-8 text-center"
-          >
-          </motion.div>
-    
-          {error && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mb-4 text-center text-red-500"
             >
-              {error}
-            </motion.p>
-          )}
-    
-          {user ? (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="p-6 mx-4 mb-6 text-white rounded-lg bg-opacity-20 backdrop-filter backdrop-blur-lg"
-            >
-              <h1 className="mb-2 text-4xl font-bold text-center">
-                Hello {user.firstName}. Here are your recommendations.
-              </h1>
             </motion.div>
-          ) : (
-            !error && <p className="text-center">Loading...</p>
-          )}
-    
-          <div className="grid grid-cols-1 gap-6 px-8 md:grid-cols-2 lg:grid-cols-3">
-            {recommendations.length > 0 ? (
-              recommendations.map((kdrama, index) => <KDramaCard key={index} kdrama={kdrama} />)
-            ) : (
-              <p className="text-center col-span-full">No recommendations to display.</p>
+            {error && (
+            <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mb-4 text-center text-red-500"
+            >
+                {error}
+            </motion.p>
             )}
-          </div>
+            {user ? (
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="p-6 mx-4 mb-6 text-white rounded-lg bg-opacity-20 backdrop-filter backdrop-blur-lg"
+            >
+                <h1 className="mb-2 text-4xl font-bold text-center">
+                Hello {user.firstName}. Here are your recommendations.
+                </h1>
+            </motion.div>
+            ) : (
+            !error && <p className="text-center">Loading...</p>
+            )}
+            <div className="grid grid-cols-1 gap-6 px-12 md:grid-cols-2 lg:grid-cols-3">
+            {recommendations.length > 0 ? (
+                recommendations.map((kdrama, index) => <KDramaCard key={index} kdrama={kdrama} />)
+            ) : (
+                <p className="text-center col-span-full">No recommendations to display.</p>
+            )}
+            </div>
         </div>
+        
       );
 }

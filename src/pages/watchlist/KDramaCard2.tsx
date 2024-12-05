@@ -124,7 +124,7 @@ export function KDramaCard({ kdrama }: { kdrama: KDrama }) {
                 {/* remove from watchlist button */}
                 <button
                     onClick={handleRemoveFromWatchlist}
-                    className={`px-4 py-2 rounded text-white ${isClicked ? "bg-red-400" : "bg-blue-500"} transition-colors duration-300`}
+                    className={`px-4 py-2 mt-3 rounded text-white ${isClicked ? "bg-red-400" : "bg-blue-500"} transition-colors duration-300`}
                     disabled={loading}
                 >
                     {loading ? "Processing..." : isClicked ? "Removed from Watchlist" : "Remove from Watchlist"}

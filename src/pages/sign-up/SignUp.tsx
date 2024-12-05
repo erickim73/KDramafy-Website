@@ -67,7 +67,7 @@ const SignUp: React.FC = () => {
     return (
         
         <BackgroundBeamsWithCollision>
-            <div className="min-h-screen flex items-center justify-center bg-[#081014] text-white p-4">
+            <div className="min-h-screen min-w-full bg-[#081014] flex items-center justify-center text-white p-4">
                 <div className="w-full max-w-lg space-y-8">
                     <div className="text-left ">
                         <h1 className="py-4 mt-16 text-3xl font-bold tracking-tight mb-162 ">

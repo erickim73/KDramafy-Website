@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import {useForm} from "react-hook-form"
 import { motion } from "framer-motion"
 import axios from "axios"
+import { TracingBeam } from "../../components/ui/tracing-beam";
 
 interface KDramaPreferences {
     minYear: string;
@@ -135,242 +136,232 @@ export const Onboarding = () => {
 
     return (
     // release year, number of episodes, rating, number of ratings, genre preference
-        <div className = "bg-[#081014] min-h-screen flex flex-col items-center justify-center text-white p-4 relative">
-            <form onSubmit = {handleSubmit(onSubmit)} className = "w-full max-w-lg p-8 mx-auto shadow-2xl rounded-2xl">
-                <h1 className="mb-8 text-3xl font-bold text-center">K-Drama Preferences</h1>
+        <div className = "bg-[#081014] overflow-hidden min-h-screen flex flex-col items-center justify-center text-white p-4 relative">
+            <TracingBeam>
+                <form onSubmit = {handleSubmit(onSubmit)} className = "bg-[#081014] w-full max-w-lg p-8 mx-auto shadow-2xl rounded-2xl">
+                    <h1 className="mb-8 text-3xl font-bold text-center">K-Drama Preferences</h1>
+                    {/* Release Year Range */}
+                    <div className="mb-8">
+                    <label className="block mb-2 text-xl font-semibold">Release Year Range</label>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        {Object.entries(predefinedCategories.releaseYear).map(([card, values]) => {
+                        const [category, range] = card.split(' (');
+                        const isStarred = card.includes("New");
+                        return (
+                            <motion.button
+                            type="button"
+                            key={card}
+                            onClick={() => toggleCard("releaseYear", card, values)}
+                            className={`px-[18px] py-2.5 rounded-lg ${
+                                selectedCards.releaseYear.includes(card)
+                                ? "bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b386e4] text-white"
+                                : "bg-gray-700 text-gray-200"
+                            } relative transition-all duration-200 ease-in-out text-sm flex flex-col items-center justify-center min-w-[100px]`}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            >
+                                {/* Star on top-right corner */}
+                                {isStarred && (
+                                    <span className="absolute z-10 text-xs font-bold text-yellow-400 top-1 right-1">
+                                        ⭐
+                                    </span>
+                                )}
+                                <span className="font-semibold">{category}</span>
+                                <span className="text-xs">({range}</span>
+                            </motion.button>
+                        );
+                        })}
+                    </div>
+                    <div className="flex space-x-4">
+                        <div className="flex flex-col w-1/2">
+                        <label className="mb-1 text-sm">Min Year</label>
+                        <input
+                            type="text"
+                            {...register("minYear", {
+                            required: "Required",
+                            validate: (value) =>
+                                parseInt(value) <= parseInt(watch("maxYear"))
+                            })}
+                            className="px-3 py-2 text-white bg-gray-700 rounded-lg"
+                        />
+                        </div>
+                        <div className="flex flex-col w-1/2">
+                        <label className="mb-1 text-sm">Max Year</label>
+                        <input
+                            type="text"
+                            {...register("maxYear", { required: "Required" })}
+                            className="px-3 py-2 text-white bg-gray-700 rounded-lg"
+                        />
+                        </div>
+                    </div>
+                        
+                    </div>
+                    {/* Number of Episodes */}
+                    <div className="mb-8">
+                    <label className="block mb-2 text-xl font-semibold">Number of Episodes</label>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        {Object.entries(predefinedCategories.episodes).map(([card, values]) => {
+                        const [categoryName, range] = card.split(' (');
+                        const isStarred = card.includes("Medium");
+                        return (
+                            <motion.button
+                            type="button"
+                            key={card}
+                            onClick={() => toggleCard('episodes', card, values)}
+                            className={`px-[26px] py-2.5 rounded-lg ${
+                                selectedCards.episodes.includes(card)
+                                ? "bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b386e4] text-white"
+                                : "bg-gray-700 text-gray-200"
+                            } relative transition-all duration-200 ease-in-out text-sm flex flex-col items-center justify-center min-w-[100px]`}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            >
+                                {/* Star on top-right corner */}
+                                {isStarred && (
+                                    <span className="absolute text-xs font-bold text-yellow-400 top-1 right-1">
+                                        ⭐
+                                    </span>
+                                )}
+                                <span className="font-semibold">{categoryName}</span>
+                                <span className="text-xs">({range}</span>
+                            </motion.button>
+                        );
+                        })}
+                    </div>
+                    <div className="flex space-x-4">
+                        <div className="flex flex-col w-1/2">
+                        <label className="mb-1 text-sm">Min Episodes</label>
+                        <input
+                            type="text"
+                            {...register("minEpisodes", {
+                            required: "Required",
+                            validate: (value) =>
+                                parseInt(value) <= parseInt(watch("maxEpisodes")) ||
+                                "Min Year Must be Less than from Max Year",
+                            })}
+                            className="px-3 py-2 text-white bg-gray-700 rounded-lg"
+                        />
+                        </div>
+                        <div className="flex flex-col w-1/2">
+                        <label className="mb-1 text-sm">Max Episodes</label>
+                        <input
+                            type="text"
+                            {...register("maxEpisodes", { required: "Required" })}
+                            className="px-3 py-2 text-white bg-gray-700 rounded-lg"
+                        />
+                        </div>
+                    </div>
+                    </div>
+                    {/* Number of Ratings */}
+                    <div className="mb-8">
+                    <label className="block mb-2 text-xl font-semibold">Number of Ratings</label>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        {Object.entries(predefinedCategories.numRatings).map(([card, values]) => {
+                        const [categoryName, range] = card.split(' (');
+                        const isStarred = card.includes("Popular");
+                        return (
+                            <motion.button
+                            type="button"
+                            key={card}
+                            onClick={() => toggleCard('numRatings', card, values)}
+                            className={`px-3 py-2.5 rounded-lg ${
+                                selectedCards.numRatings.includes(card)
+                                ? "bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b386e4] text-white"
+                                : "bg-gray-700 text-gray-200"
+                            } relative transition-all duration-200 ease-in-out text-sm flex flex-col items-center justify-center min-w-[100px]`}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            >
+                                {/* Star on top-right corner */}
+                                {isStarred && (
+                                    <span className="absolute text-xs font-bold text-yellow-400 top-1 right-1">
+                                        ⭐
+                                    </span>
+                                )}
+                                <span className="font-semibold">{categoryName}</span>
+                                <span className="text-xs">({range}</span>
+                            </motion.button>
+                        );
+                        })}
+                    </div>
+                    <div className="flex space-x-4">
+                        <div className="flex flex-col w-1/2">
+                        <label className="mb-1 text-sm">Min Ratings</label>
+                        <input
+                            type="text"
+                            {...register("minNumRatings", {
+                            required: "Required",
+                            validate: (value) =>
+                                parseInt(value) <= parseInt(watch("maxNumRatings")) ||
+                                "Min Year Must be Less than from Max Year",
+                            })}
+                            className="px-3 py-2 text-white bg-gray-700 rounded-lg"
+                        />
+                        </div>
+                        <div className="flex flex-col w-1/2">
+                        <label className="mb-1 text-sm">Max Ratings</label>
+                        <input
+                            type="text"
+                            {...register("maxNumRatings", { required: "Required" })}
+                            className="px-3 py-2 text-white bg-gray-700 rounded-lg"
+                        />
+                        </div>
+                    </div>
+                    </div>
+                    {/* Genres */}
+                    <div className="mb-8">
+                    <label className="block mb-2 text-xl font-semibold">Genres (Select up to 3)</label>
+                    <div className="flex flex-wrap gap-2">
+                        {possibleGenres.map((genre) => (
+                        <motion.div
+                            key={genre}
+                            className={`cursor-pointer rounded-lg px-4 py-2 transition-all duration-200 ease-in-out ${
+                            watch("genres").includes(genre)
+                                ? "bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b386e4] text-white"
+                                : "bg-gray-700 text-gray-200 hover:bg-gray-600"
+                            }`}
+                            onClick={() => {
+                            const currentGenres = watch("genres")
+                            if (currentGenres.includes(genre)) {
+                                setValue(
+                                "genres",
+                                currentGenres.filter((g) => g !== genre)
+                                )
+                            } else if (currentGenres.length < 3) {
+                                setValue("genres", [...currentGenres, genre])
+                            }
+                            }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            {genre}
+                        </motion.div>
+                        ))}
+                    </div>
+                    </div>
+                    {/* Submit button */}
+                    <div className="flex justify-center">
+                        <motion.button
+                            type="submit"
+                            className={`px-8 py-3 font-bold text-white shadow-lg rounded-xl transition duration-300 ease-in-out transform hover:scale-110 bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b386e4] flex items-center justify-center ${
+                                loading ? "opacity-70 cursor-not-allowed" : ""
+                            }`}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                    <div className="w-5 h-5 border-2 border-white rounded-full border-t-transparent animate-spin"></div>
+                                ) : (
+                                    "Get Recommendations"
+                            )}
+                        </motion.button>
+                    </div>
                 
-                {/* Release Year Range */}
-                <div className="mb-8">
-                <label className="block mb-2 text-xl font-semibold">Release Year Range</label>
-                <div className="flex flex-wrap gap-2 mb-4">
-                    {Object.entries(predefinedCategories.releaseYear).map(([card, values]) => {
-                    const [category, range] = card.split(' (');
-                    const isStarred = card.includes("New");
-                    return (
-                        <motion.button
-                        type="button"
-                        key={card}
-                        onClick={() => toggleCard("releaseYear", card, values)}
-                        className={`px-[18px] py-2.5 rounded-lg ${
-                            selectedCards.releaseYear.includes(card) 
-                            ? "bg-[#6a5acd] text-white" 
-                            : "bg-gray-700 text-gray-200"
-                        } relative transition-all duration-200 ease-in-out text-sm flex flex-col items-center justify-center min-w-[100px]`}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        >
-                            {/* Star on top-right corner */}
-                            {isStarred && (
-                                <span className="absolute z-10 text-xs font-bold text-yellow-400 top-1 right-1">
-                                    ⭐
-                                </span>
-                            )}
-                            <span className="font-semibold">{category}</span>
-                            <span className="text-xs">({range}</span>
-                        </motion.button>
-                    );
-                    })}
-                </div>
-                <div className="flex space-x-4">
-                    <div className="flex flex-col w-1/2">
-                    <label className="mb-1 text-sm">Min Year</label>
-                    <input
-                        type="text"
-                        {...register("minYear", {
-                        required: "Required",
-                        validate: (value) =>
-                            parseInt(value) <= parseInt(watch("maxYear")) ||
-                            "Must be ≤ Max Year",
-                        })}
-                        className="px-3 py-2 text-white bg-gray-700 rounded-lg"
-                    />
-                    </div>
-                    <div className="flex flex-col w-1/2">
-                    <label className="mb-1 text-sm">Max Year</label>
-                    <input
-                        type="text"
-                        {...register("maxYear", { required: "Required" })}
-                        className="px-3 py-2 text-white bg-gray-700 rounded-lg"
-                    />
-                    </div>
-                </div>
-
-                    {/* error messages for release year */}
-                    {errors.minYear && (<p className="text-sm text-red-500">{errors.minYear.message}</p>)}
-                    {errors.maxYear && (<p className="text-sm text-red-500">{errors.maxYear.message}</p>)}
-                </div>
-
-
-                {/* Number of Episodes */}
-                <div className="mb-8">
-                <label className="block mb-2 text-xl font-semibold">Number of Episodes</label>
-                <div className="flex flex-wrap gap-2 mb-4">
-                    {Object.entries(predefinedCategories.episodes).map(([card, values]) => {
-                    const [categoryName, range] = card.split(' (');
-                    const isStarred = card.includes("Medium");
-                    return (
-                        <motion.button
-                        type="button"
-                        key={card}
-                        onClick={() => toggleCard('episodes', card, values)}
-                        className={`px-[26px] py-2.5 rounded-lg ${
-                            selectedCards.episodes.includes(card) 
-                            ? "bg-[#6a5acd] text-white" 
-                            : "bg-gray-700 text-gray-200"
-                        } relative transition-all duration-200 ease-in-out text-sm flex flex-col items-center justify-center min-w-[100px]`}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        >
-                            {/* Star on top-right corner */}
-                            {isStarred && (
-                                <span className="absolute text-xs font-bold text-yellow-400 top-1 right-1">
-                                    ⭐
-                                </span>
-                            )}
-                            <span className="font-semibold">{categoryName}</span>
-                            <span className="text-xs">({range}</span>
-                        </motion.button>
-                    );
-                    })}
-                </div>
-                <div className="flex space-x-4">
-                    <div className="flex flex-col w-1/2">
-                    <label className="mb-1 text-sm">Min Episodes</label>
-                    <input
-                        type="text"
-                        {...register("minEpisodes", {
-                        required: "Required",
-                        validate: (value) =>
-                            parseInt(value) <= parseInt(watch("maxEpisodes")) ||
-                            "Must be ≤ Max Episodes",
-                        })}
-                        className="px-3 py-2 text-white bg-gray-700 rounded-lg"
-                    />
-                    </div>
-                    <div className="flex flex-col w-1/2">
-                    <label className="mb-1 text-sm">Max Episodes</label>
-                    <input
-                        type="text"
-                        {...register("maxEpisodes", { required: "Required" })}
-                        className="px-3 py-2 text-white bg-gray-700 rounded-lg"
-                    />
-                    </div>
-                </div>
-                {errors.minEpisodes && (<p className="mt-1 text-sm text-red-400">{errors.minEpisodes.message}</p>)}
-                {errors.maxEpisodes && (<p className="mt-1 text-sm text-red-400">{errors.maxEpisodes.message}</p>)}
-                </div>
-
-                {/* Number of Ratings */}
-                <div className="mb-8">
-                <label className="block mb-2 text-xl font-semibold">Number of Ratings</label>
-                <div className="flex flex-wrap gap-2 mb-4">
-                    {Object.entries(predefinedCategories.numRatings).map(([card, values]) => {
-                    const [categoryName, range] = card.split(' (');
-                    const isStarred = card.includes("Popular");
-                    return (
-                        <motion.button
-                        type="button"
-                        key={card}
-                        onClick={() => toggleCard('numRatings', card, values)}
-                        className={`px-3 py-2.5 rounded-lg ${
-                            selectedCards.numRatings.includes(card) 
-                            ? "bg-[#6a5acd] text-white" 
-                            : "bg-gray-700 text-gray-200"
-                        } relative transition-all duration-200 ease-in-out text-sm flex flex-col items-center justify-center min-w-[100px]`}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        >
-                            {/* Star on top-right corner */}
-                            {isStarred && (
-                                <span className="absolute text-xs font-bold text-yellow-400 top-1 right-1">
-                                    ⭐
-                                </span>
-                            )}
-                            <span className="font-semibold">{categoryName}</span>
-                            <span className="text-xs">({range}</span>
-                        </motion.button>
-                    );
-                    })}
-                </div>
-                <div className="flex space-x-4">
-                    <div className="flex flex-col w-1/2">
-                    <label className="mb-1 text-sm">Min Ratings</label>
-                    <input
-                        type="text"
-                        {...register("minNumRatings", {
-                        required: "Required",
-                        validate: (value) =>
-                            parseInt(value) <= parseInt(watch("maxNumRatings")) ||
-                            "Must be ≤ Max Ratings",
-                        })}
-                        className="px-3 py-2 text-white bg-gray-700 rounded-lg"
-                    />
-                    </div>
-                    <div className="flex flex-col w-1/2">
-                    <label className="mb-1 text-sm">Max Ratings</label>
-                    <input
-                        type="text"
-                        {...register("maxNumRatings", { required: "Required" })}
-                        className="px-3 py-2 text-white bg-gray-700 rounded-lg"
-                    />
-                    </div>
-                </div>
-                {errors.minNumRatings && (<p className="mt-1 text-sm text-red-400">{errors.minNumRatings.message}</p>)}
-                {errors.maxNumRatings && (<p className="mt-1 text-sm text-red-400">{errors.maxNumRatings.message}</p>)}
-                </div>
-
-                {/* Genres */}
-                <div className="mb-8">
-                <label className="block mb-2 text-xl font-semibold">Genres (Select up to 3)</label>
-                <div className="flex flex-wrap gap-2">
-                    {possibleGenres.map((genre) => (
-                    <motion.div
-                        key={genre}
-                        className={`cursor-pointer rounded-lg px-4 py-2 transition-all duration-200 ease-in-out ${
-                        watch("genres").includes(genre)
-                            ? "bg-[#6a5acd] text-white"
-                            : "bg-gray-700 text-gray-200 hover:bg-gray-600"
-                        }`}
-                        onClick={() => {
-                        const currentGenres = watch("genres")
-                        if (currentGenres.includes(genre)) {
-                            setValue(
-                            "genres",
-                            currentGenres.filter((g) => g !== genre)
-                            )
-                        } else if (currentGenres.length < 3) {
-                            setValue("genres", [...currentGenres, genre])
-                        }
-                        }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        {genre}
-                    </motion.div>
-                    ))}
-                </div>
-                </div>
-
-                {/* Submit button */}
-                <div className="flex justify-center">
-                    <motion.button
-                        type="submit"
-                        className={`px-8 py-3 font-bold text-white shadow-lg rounded-xl transition duration-300 ease-in-out transform hover:scale-110 bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] flex items-center justify-center ${
-                            loading ? "opacity-70 cursor-not-allowed" : ""
-                        }`}                    
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        disabled={loading}
-                    >
-                        {loading ? (
-                                <div className="w-5 h-5 border-2 border-white rounded-full border-t-transparent animate-spin"></div>
-                            ) : (
-                                "Get Recommendations"
-                        )}
-                    </motion.button>
-                </div>
-            </form>
-            </div>
+                </form>
+            </TracingBeam>
+        </div>
+        
         )
     }
 

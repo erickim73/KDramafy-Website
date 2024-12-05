@@ -12,7 +12,7 @@ import axios from 'axios'
 import {Toaster} from "react-hot-toast"
 import { UserContextProvider } from './context/userContext';
 import Dashboard from './pages/dashboard/Dashboard';
-
+import { WavyBackgroundDemo } from './pages/test/test';
 
 axios.defaults.baseURL = "https://kdramafyy-753476690747.us-central1.run.app/";
 
@@ -31,7 +31,8 @@ function App() {
                     <Route path = "/onboarding" element = {<Onboarding/>}/>
                     <Route path = "/explore" element = {<Explore/>}/>
                     <Route path = "/watchlist" element = {<Watchlist/>}/>
-                    <Route path = "/home" element = {<Dashboard/>}/>
+                    <Route path = "/dashboard" element = {<Dashboard/>}/>
+                    <Route path = "/test" element = {<WavyBackgroundDemo/>}/>
                 </Routes>
             </Router>
         </UserContextProvider>

@@ -103,7 +103,7 @@ export function KDramaCard({ kdrama }: { kdrama: KDrama }) {
                 alt={`${kdrama.Name} Poster`}
                 className="object-cover object-center w-full h-98"
             />
-            <div className="p-4">
+            <div className="p-2">
                 <h3 className="mb-2 text-xl font-semibold text-gray-800 dark:text-white">{kdrama.Name} ({kdrama["Korean Name"]})</h3>
             
             <p className="mb-1 text-sm text-gray-700 dark:text-gray-300">
@@ -121,14 +121,22 @@ export function KDramaCard({ kdrama }: { kdrama: KDrama }) {
             <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3">{kdrama.Description}</p>
 
             {/* add to watchlist button */}
-            <button
+            <motion.div
+            className="relative flex items-center justify-center w-max p-[2px] rounded-xl overflow-hidden"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            >
+                <button
                 onClick={handleAddToWatchlist}
-                className={`px-4 py-2 rounded text-white ${isClicked ? "bg-green-500" : "bg-blue-500"} transition-colors duration-300`}
+                className={`mt-3 px-4 py-2 rounded text-white ${isClicked ? "bg-green-500" : "bg-blue-500"} transition-colors duration-300`}
                 disabled={loading}
             >
                 {loading ? "Processing..." : isClicked ? "Added to Watchlist" : "Add to Watchlist"}
 
             </button>
+            </motion.div>
+            
+            
 
             {/* Display feedback message */}
             {message && (
@@ -137,7 +145,7 @@ export function KDramaCard({ kdrama }: { kdrama: KDrama }) {
             
             {/* Streaming Services */}
             {kdrama["Streaming Services"] && (
-                <div className="mt-4">
+                <div className="mt-2 mb-2">
                 <span className="mb-2 text-sm font-semibold text-gray-800 dark:text-white">Watch on:</span>
                 <div className="flex flex-wrap gap-4 mt-2 justify-left">
                     {kdrama["Streaming Services"].split(", ").map((service, index) => {
@@ -156,7 +164,7 @@ export function KDramaCard({ kdrama }: { kdrama: KDrama }) {
                             className="inline-block ml-2"
                         >
                             {platformData ? (
-                                <div className = "relative w-16 mt-2 overflow-hidden transition-shadow duration-200 rounded-md shadow-md h-9 hover:shadow-lg">
+                                <div className = "relative w-16 mt-2 mb-2 overflow-hidden transition-shadow duration-200 rounded-md shadow-md h-9 hover:shadow-lg">
                                     <img
                                     src={platformData.logo}
                                     alt={`${platform} logo`}

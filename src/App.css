@@ -3,3 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
+body, html {
+    background-color: #081014;
+    min-height: 100vh;
+}
+

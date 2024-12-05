@@ -1,5 +1,6 @@
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 // Type definitions
 type Picture = {
@@ -177,80 +178,76 @@ const SecondaryMessage = () => (
 );
 
 const GetStartedButton = () => (
-    <motion.div
-        className="relative flex items-center justify-center w-max p-[2px] rounded-xl overflow-hidden"
-    >
-        {/* Rotating background */}
+    <Link to="/signup">
         <motion.div
-            className="absolute inset-0 h-full w-full bg-[conic-gradient(#6a5acd_160deg,transparent_120deg)] animate-rotate rounded-full"
-        />
+            className="relative flex items-center justify-center w-max p-[2px] rounded-xl overflow-hidden"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+        >
+            {/* Rotating background */}
+            <motion.div
+                className="absolute inset-0 h-full w-full bg-[conic-gradient(#6a5acd_160deg,transparent_120deg)] animate-rotate rounded-full"
+            />
         
-        {/* Button container */}
-        <div className="relative z-10 flex items-center justify-center w-max rounded-xl bg-slate-900 p-[2px]">
-            <motion.button
-                className="font-montserrat rounded-xl font-medium px-7 py-4 transition duration-300 ease-in-out bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] text-white shadow-lg"
-                initial={{ opacity: 0, y: 0 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7, duration: 0.5 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-            >
-                Get Started
-            </motion.button>
-        </div>
-    </motion.div>
+            {/* Button container */}
+            <div className="relative z-10 flex items-center justify-center w-max rounded-xl bg-slate-900 p-[2px]">
+                <button
+                    className="font-montserrat rounded-xl font-medium px-7 py-4 transition duration-300 ease-in-out bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] text-white shadow-lg"
+                >
+                    Get Started
+                </button>
+            </div>
+        </motion.div>
+    </Link>
 );
 
 
-const PictureGrid = ({ pictures }: PictureGridProps) => {
+const PictureGrid: React.FC<{ pictures: Picture[] }> = ({ pictures }) => {
     const { ref, controls } = useScrollAnimation();
   
     return (
-        <>
-            <motion.h2
-                className="mt-16 mb-2 text-3xl font-medium text-center font-montserrat"
-                initial={{ opacity: 0, y: -25 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-            >
-                Popular Dramas
-            </motion.h2>
+      <motion.div
+        ref={ref}
+        variants={containerVariants}
+        initial="hidden"
+        animate={controls}
+      >
+        <motion.h2
+          className="mt-16 mb-2 text-3xl font-medium text-center font-montserrat"
+          variants={itemVariants}
+        >
+          Popular Dramas
+        </motion.h2>
+        <motion.div
+          className="grid w-full max-w-6xl grid-cols-2 gap-4 py-2 md:grid-cols-4"
+          variants={containerVariants}
+        >
+          {pictures.map((picture) => (
             <motion.div
-                ref={ref}
-                className="grid w-full max-w-6xl grid-cols-2 gap-4 py-2 md:grid-cols-4"
-                variants={containerVariants}
-                initial="hidden"
-                animate={controls}
-                >
-            
-                {pictures.map((picture) => (
-                    <motion.div
-                        key={picture.title}
-                        className="flex flex-col items-center"
-                        variants={pictureVariants}
-                    >
-                        {picture.title}
-                    <motion.div
-                        className="relative w-full overflow-hidden text-center shadow-lg rounded-xl"
-                    >
-            
-                        <img
-                        src={picture.src}
-                        alt={picture.alt}
-                        className="object-cover w-full h-full rounded-xl"
-                        />
-                    </motion.div>
-                    <motion.p
-                        className="mt-2 text-sm font-medium text-center text-gray-300"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                    >
-                    </motion.p>
-                </motion.div>
-            ))}
+              key={picture.title}
+              className="flex flex-col items-center"
+              variants={pictureVariants}
+            >
+            {picture.title}
+              <motion.div
+                className="relative w-full overflow-hidden text-center shadow-lg rounded-xl"
+              >
+                <img
+                  src={picture.src}
+                  alt={picture.alt}
+                  className="object-cover w-full h-full rounded-xl"
+                />
+              </motion.div>
+              <motion.p
+                className="mt-2 text-sm font-medium text-center text-gray-300"
+                variants={itemVariants}
+              >
+                
+              </motion.p>
             </motion.div>
-        </>
+          ))}
+        </motion.div>
+      </motion.div>
     );
   };
       
