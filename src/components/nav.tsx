@@ -1,5 +1,10 @@
 import {Link, useNavigate, useLocation} from "react-router-dom"
 import { useState, useEffect } from "react"
+import {jwtDecode} from "jwt-decode"
+
+interface TokenPayload {
+    exp: number; // Expiration time in seconds since the epoch
+}
 
 export const Navbar = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -8,9 +13,29 @@ export const Navbar = () => {
 
     // check if user is authenticated
     useEffect(() => {
-        const token = localStorage.getItem("token")
-        setIsAuthenticated(!!token) // if token exists, user is authenticated
-    }, [location.pathname])
+        const token = localStorage.getItem("token");
+
+        if (token) {
+            try {
+                const decodedToken = jwtDecode<TokenPayload>(token);
+                const currentTime = Date.now() / 1000; // Current time in seconds
+
+                if (decodedToken.exp > currentTime) {
+                    setIsAuthenticated(true);
+                } else {
+                    // Token is expired
+                    localStorage.removeItem("token");
+                    setIsAuthenticated(false);
+                }
+            } catch (error) {
+                // Invalid token
+                localStorage.removeItem("token");
+                setIsAuthenticated(false);
+            }
+        } else {
+            setIsAuthenticated(false);
+        }
+    }, [location.pathname]);
 
 
     const handleSignOut = () => {
