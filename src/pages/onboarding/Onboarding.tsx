@@ -136,8 +136,8 @@ export const Onboarding = () => {
 
     return (
     // release year, number of episodes, rating, number of ratings, genre preference
-        <div className = "bg-[black] overflow-y-auto min-h-screen flex flex-col items-center justify-center text-white p-4 relative mb-20">
-            <TracingBeam className = "mb-12">
+        <div className = "bg-[black] min-h-screen flex flex-col items-center justify-center text-white p-4 relative mb-16">
+            <TracingBeam>
                 <form onSubmit = {handleSubmit(onSubmit)} className = "bg-[black] w-full max-w-xl p-8 sm:p-8 mx-auto shadow-2xl rounded-2xl ">
                     <h1 className="mb-8 text-3xl font-bold text-center">K-Drama Preferences</h1>
                     {/* Release Year Range */}
