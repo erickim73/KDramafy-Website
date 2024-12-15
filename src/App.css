@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 body, html {
-    background-color: #081014;
+    background-color: black;
     min-height: 100vh;
 }
 

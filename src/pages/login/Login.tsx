@@ -64,59 +64,57 @@ const Login: React.FC = () => {
 
 
     return (
-        <BackgroundBeamsWithCollision>
-            <div className="min-h-screen flex items-center justify-center bg-[#081014] text-white p-4">
-                <div className="w-full max-w-lg space-y-8">
-                    <div className="text-center">
-                        <h1 className="mb-2 text-4xl font-bold tracking-tight">Welcome back to KDramafy!</h1>
-            
-                    </div>
-                    <form onSubmit={loginUser} className="space-y-6">
-                        <div className="space-y-4">
-                            <div className="space-y-2">
-                                <label htmlFor="email" className="font-semibold text-white">Email</label>
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    placeholder="johndoe@kdramafy.com"
-                                    value={data.email}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full bg-[#1a1a1a] text-white h-11 rounded-lg px-4"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <label htmlFor="password" className="font-semibold text-white">Password</label>
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    placeholder="••••••••••••"
-                                    value={data.password}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full bg-[#1a1a1a] text-white h-11 rounded-lg px-4"
-                                />
-                            </div>
+        <div className="min-h-screen flex items-center justify-center bg-[black] text-white p-4">
+            <div className="w-full max-w-lg space-y-8">
+                <div className="text-center">
+                    <h1 className="mb-2 text-4xl font-bold tracking-tight">Welcome back to KDramafy!</h1>
+        
+                </div>
+                <form onSubmit={loginUser} className="space-y-6">
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <label htmlFor="email" className="font-semibold text-white">Email</label>
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                placeholder="johndoe@kdramafy.com"
+                                value={data.email}
+                                onChange={handleChange}
+                                required
+                                className="w-full bg-[#1a1a1a] text-white h-11 rounded-lg px-4"
+                            />
                         </div>
-                        <button
-                            type="submit"
-                            className="w-full h-12 text-lg font-medium text-black transition-colors bg-white rounded-lg hover:bg-gray-200"
-                            disabled={isLoading}
-                        >
-                            {isLoading ? "Logging in..." : "Login"}
-                        </button>
-                    </form>
-                    <div className="text-center text-gray-300">
-                        Don't have an account?{" "}
-                        <Link to="/signup" className="text-white underline">
-                            Sign up here!
-                        </Link>
+                        <div className="space-y-2">
+                            <label htmlFor="password" className="font-semibold text-white">Password</label>
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                placeholder="••••••••••••"
+                                value={data.password}
+                                onChange={handleChange}
+                                required
+                                className="w-full bg-[#1a1a1a] text-white h-11 rounded-lg px-4"
+                            />
+                        </div>
                     </div>
+                    <button
+                        type="submit"
+                        className="w-full h-12 text-lg font-medium text-black transition-colors bg-white rounded-lg hover:bg-gray-200"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Logging in..." : "Login"}
+                    </button>
+                </form>
+                <div className="text-center text-gray-300">
+                    Don't have an account?{" "}
+                    <Link to="/signup" className="text-white underline">
+                        Sign up here!
+                    </Link>
                 </div>
             </div>
-        </BackgroundBeamsWithCollision>
+        </div>
     );
 };
 

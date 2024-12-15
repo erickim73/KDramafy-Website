@@ -89,7 +89,7 @@ export const Home = () => {
 
     return (
         <div className="min-h-screen overflow-hidden">
-            <div className="bg-[#081014] min-h-screen flex flex-col text-white relative">
+            <div className="bg-[black] min-h-screen flex flex-col text-white relative md:px-10">
                 <main className="relative z-10 flex flex-col items-center justify-center flex-grow p-4">
                     <BackgroundElements />
                     <Slogan />
@@ -127,13 +127,13 @@ export const BackgroundElements = () => (
 // Slogan with animated gradient text
 const Slogan = () => (
     <motion.div
-        className="relative p-[2px] rounded-full bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] mb-10 mt-10"
+        className="relative p-[2px] rounded-full bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] mb-10 mt-10 s"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
         >
-            <span className="block bg-[#081014] rounded-full px-6 py-2">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] font-semibold">
+            <span className="block bg-[black] rounded-full px-6 py-2">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] font-semibold m:font-thin md:font-bold">
                 Discover Your Perfect K-Drama Today
                 </span>
             </span>
@@ -143,7 +143,7 @@ const Slogan = () => (
 // Main message with title
 const MainMessage = () => (
     <motion.div
-        className="w-11/12 mb-8 space-y-6 text-5xl font-bold text-center md:text-6xl font-montserrat"
+        className="w-full mb-4 space-y-2 text-3xl font-bold text-center md:mb-8 md:space-y-6 md:text-5xl sm:text-4xl md:text-6xl font-montserrat"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -163,20 +163,20 @@ const MainMessage = () => (
 // Secondary message under the main message
 const SecondaryMessage = () => (
     <motion.div
-        className="mb-6 space-y-1 text-lg text-center text-gray-400 font-montserrat"
+        className="mb-4 space-y-1 text-sm text-center text-gray-400 md:mb-6 sm:text-lg md:text-lg font-montserrat"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.5 }}
-        >
-        <div>Discover Your Perfect K-Drama Match: Unlimited K-Drama</div>
-        <div>Recommendations, Custom Watchlists, and More</div>
+    >
+        <div className="break-words text-semibold">Find Your Perfect K-Drama Match: </div>
+        <div className="break-words">K-Drama Recommendations, Customized Watchlists & More</div>
     </motion.div>
 );
 
 const GetStartedButton = () => (
     <Link to="/signup">
         <motion.div
-            className="relative flex items-center justify-center w-max p-[2px] rounded-xl overflow-hidden"
+            className="relative flex items-center justify-center w-max p-[2px] rounded-xl overflow-hidden "
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
         >
@@ -188,7 +188,7 @@ const GetStartedButton = () => (
             {/* Button container */}
             <div className="relative z-10 flex items-center justify-center w-max rounded-xl bg-slate-900 p-[2px]">
                 <button
-                    className="font-montserrat rounded-xl font-medium px-7 py-4 transition duration-300 ease-in-out bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] text-white shadow-lg"
+                    className="font-montserrat rounded-xl font-medium px-4 py-2 md:px-7 md:py-4 text-sm md:text-base transition duration-300 ease-in-out bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b293d3] text-white shadow-lg"
                 >
                     Get Started
                 </button>
@@ -209,13 +209,13 @@ const PictureGrid: React.FC<{ pictures: Picture[] }> = ({ pictures }) => {
         animate={controls}
       >
         <motion.h2
-          className="mt-16 mb-2 text-3xl font-medium text-center font-montserrat"
+          className="mt-8 mb-2 text-2xl font-medium text-center md:mt-16 md:text-3xl font-montserrat"
           variants={itemVariants}
         >
           Popular Dramas
         </motion.h2>
         <motion.div
-          className="grid w-full max-w-6xl grid-cols-2 gap-4 py-2 md:grid-cols-4"
+          className="grid w-full max-w-6xl grid-cols-2 gap-4 py-2 sm:grid-cols-2 md:grid-cols-4"
           variants={containerVariants}
         >
           {pictures.map((picture) => (

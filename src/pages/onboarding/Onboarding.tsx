@@ -136,9 +136,9 @@ export const Onboarding = () => {
 
     return (
     // release year, number of episodes, rating, number of ratings, genre preference
-        <div className = "bg-[#081014] overflow-hidden min-h-screen flex flex-col items-center justify-center text-white p-4 relative">
+        <div className = "bg-[black] overflow-hidden min-h-screen flex flex-col items-center justify-center text-white p-4 relative">
             <TracingBeam>
-                <form onSubmit = {handleSubmit(onSubmit)} className = "bg-[#081014] w-full max-w-lg p-8 mx-auto shadow-2xl rounded-2xl">
+                <form onSubmit = {handleSubmit(onSubmit)} className = "bg-[black] w-full max-w-xl p-8 mx-auto shadow-2xl rounded-2xl">
                     <h1 className="mb-8 text-3xl font-bold text-center">K-Drama Preferences</h1>
                     {/* Release Year Range */}
                     <div className="mb-8">
@@ -152,7 +152,7 @@ export const Onboarding = () => {
                             type="button"
                             key={card}
                             onClick={() => toggleCard("releaseYear", card, values)}
-                            className={`px-[18px] py-2.5 rounded-lg ${
+                            className={`px-[26px] py-2.5 rounded-lg ${
                                 selectedCards.releaseYear.includes(card)
                                 ? "bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b386e4] text-white"
                                 : "bg-gray-700 text-gray-200"
@@ -208,7 +208,7 @@ export const Onboarding = () => {
                             type="button"
                             key={card}
                             onClick={() => toggleCard('episodes', card, values)}
-                            className={`px-[26px] py-2.5 rounded-lg ${
+                            className={`px-[35px] py-2.5 rounded-lg ${
                                 selectedCards.episodes.includes(card)
                                 ? "bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b386e4] text-white"
                                 : "bg-gray-700 text-gray-200"
@@ -264,7 +264,7 @@ export const Onboarding = () => {
                             type="button"
                             key={card}
                             onClick={() => toggleCard('numRatings', card, values)}
-                            className={`px-3 py-2.5 rounded-lg ${
+                            className={`px-[22px] py-2.5 rounded-lg ${
                                 selectedCards.numRatings.includes(card)
                                 ? "bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b386e4] text-white"
                                 : "bg-gray-700 text-gray-200"
@@ -310,37 +310,38 @@ export const Onboarding = () => {
                     </div>
                     {/* Genres */}
                     <div className="mb-8">
-                    <label className="block mb-2 text-xl font-semibold">Genres (Select up to 3)</label>
-                    <div className="flex flex-wrap gap-2">
-                        {possibleGenres.map((genre) => (
-                        <motion.div
-                            key={genre}
-                            className={`cursor-pointer rounded-lg px-4 py-2 transition-all duration-200 ease-in-out ${
-                            watch("genres").includes(genre)
-                                ? "bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b386e4] text-white"
-                                : "bg-gray-700 text-gray-200 hover:bg-gray-600"
-                            }`}
-                            onClick={() => {
-                            const currentGenres = watch("genres")
-                            if (currentGenres.includes(genre)) {
-                                setValue(
-                                "genres",
-                                currentGenres.filter((g) => g !== genre)
-                                )
-                            } else if (currentGenres.length < 3) {
-                                setValue("genres", [...currentGenres, genre])
-                            }
-                            }}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            {genre}
-                        </motion.div>
-                        ))}
+                        <label className="block mb-2 text-xl font-semibold">Genres (Select up to 3)</label>
+                        <div className="grid grid-cols-3 gap-4">
+                            {possibleGenres.map((genre) => (
+                            <motion.div
+                                key={genre}
+                                className={`cursor-pointer rounded-lg px-4 py-4 text-center transition-all duration-200 ease-in-out font-semibold ${
+                                watch("genres").includes(genre)
+                                    ? "bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b386e4] text-white"
+                                    : "bg-gray-700 text-gray-200 hover:bg-gray-600"
+                                }`}
+                                onClick={() => {
+                                    const currentGenres = watch("genres");
+                                    if (currentGenres.includes(genre)) {
+                                        setValue(
+                                            "genres",
+                                            currentGenres.filter((g) => g !== genre)
+                                        );
+                                    } else if (currentGenres.length < 3) {
+                                        setValue("genres", [...currentGenres, genre]);
+                                    }
+                                }}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                {genre}
+                            </motion.div>
+                            ))}
+                        </div>
                     </div>
-                    </div>
+
                     {/* Submit button */}
-                    <div className="flex justify-center">
+                    <div className="flex justify-center mb-16">
                         <motion.button
                             type="submit"
                             className={`px-8 py-3 font-bold text-white shadow-lg rounded-xl transition duration-300 ease-in-out transform hover:scale-110 bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b386e4] flex items-center justify-center ${

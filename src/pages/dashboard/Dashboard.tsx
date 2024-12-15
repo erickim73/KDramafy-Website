@@ -48,7 +48,7 @@ export const Dashboard = () => {
     }
 
   return (
-    <div className="min-h-screen text-white bg-[#081014]">
+    <div className="min-h-screen text-white bg-[black] flex items-center justify-center pt-8">
         <WavyBackground className="max-w-4xl pb-40 mx-auto ">
             <div className="container max-w-4xl px-4 py-16 mx-auto space-y-12 ">
                 <div className = "bg-transparent rounded-2xl">

@@ -73,7 +73,7 @@ export const Explore = () => {
     
 
     return (
-        <div className="bg-[#081014] min-h-screen text-white scrollbar-hide pb-16">
+        <div className="bg-[black] min-h-screen text-white scrollbar-hide pb-16">
         
             <motion.div
             initial={{ opacity: 0, y: -20 }}

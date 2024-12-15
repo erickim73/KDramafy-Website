@@ -28,22 +28,22 @@ export const Navbar = () => {
     }
     
     return (
-        <nav className="sticky top-0 z-50 flex items-center justify-between transition duration-300 ease-in-out full bg-[#081014] lg:py-6">
-            <div className="flex items-center">
+        <nav className="sticky top-0 z-50 flex items-center justify-between transition duration-300 ease-in-out w-full bg-[black] py-4 px-3 lg:px-6 lg:py-8">
+            <div className="flex items-center justify-between">
                 {/* Website name */}
                 <Link to="/">
-                    <span className="text-[29px] ml-2 font-montserrat text-white font-black px-4 py-4">
+                    <span className="text-2xl md:text-[29px] font-montserrat text-white font-black">
                         KDramafy
                     </span>
                 </Link>
             </div>
             {/* Right elements */}
-            <div className="flex text-right">
+            <div className="flex">
                 {isAuthenticated ? (
                     <>
                         <Link to="/dashboard">
                             <button
-                                className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
+                                className="text-white text-sm rounded-xl font-medium font-montserrat border border-white px-2 py-2 mr-3 ml-1 mt-2 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110 sm:px-1 md:px-1"
                                 style={{
                                     background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
                                     padding: "8px 16px",
@@ -52,31 +52,10 @@ export const Navbar = () => {
                                 Dashboard
                             </button>
                         </Link>
-                        <Link to="/explore">
-                            <button
-                                className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
-                                style={{
-                                    background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
-                                    padding: "8px 16px",
-                                }}
-                            >
-                                Discover
-                            </button>
-                        </Link>
-                        <Link to="/watchlist">
-                            <button
-                                className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
-                                style={{
-                                    background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
-                                    padding: "8px 16px",
-                                }}
-                            >
-                                Watchlist
-                            </button>
-                        </Link>
+                        
                         <button
                             onClick={handleSignOut}
-                            className="text-white rounded-xl font-medium border font-montserrat border-white px-4 py-2 mr-5 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
+                            className="text-white text-sm rounded-xl font-medium border font-montserrat border-white px-2 py-2 mt-2 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
                             style={{
                                 background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
                                 padding: "8px 16px",
@@ -92,7 +71,7 @@ export const Navbar = () => {
                     <>
                         <Link to="/signup">
                             <button
-                                className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
+                                className="text-white rounded-xl font-medium font-montserrat border border-white px-4 py-2 mr-4 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110 sm:px-1 md:px-1"
                                 style={{
                                     background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
                                     padding: "8px 16px",
@@ -103,7 +82,7 @@ export const Navbar = () => {
                         </Link>
                         <Link to="/login">
                             <button
-                                className="text-white rounded-xl font-medium border font-montserrat border-white px-4 py-2 mr-5 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110"
+                                className="text-white rounded-xl font-medium border font-montserrat border-white px-2 py-2 mr-5 transition duration-300 ease-in-out transform hover:text-[#ffffff] hover:scale-110 sm:px-1 md:px-1"
                                 style={{
                                     background: "linear-gradient(180deg, #e2e8ff00, #e2e8ff1f)",
                                     padding: "8px 16px",
