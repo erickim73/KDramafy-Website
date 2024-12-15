@@ -75,47 +75,47 @@ export const Dashboard = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
-                    className="space-y-8"
+                    className="space-y-6"
                 >
                     <h2 className="text-2xl font-semibold text-center text-indigo-100">
                     Discover, explore, and fall in love with K-Dramas tailored just for you.
                     </h2>
             
-                    <div className="grid gap-6 md:grid-cols-2">
-                    <Link to="/explore" className="block">
-                        <motion.button
-                        variants={buttonVariants}
-                        whileHover="hover"
-                        whileTap="tap"
-                        className="flex items-center justify-center w-full p-4 space-x-3 text-lg font-medium transition-colors bg-indigo-600 rounded-xl hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-900"
-                        >
-                        <PlayCircle className="w-6 h-6" />
-                        <span>View Recommendations</span>
-                        </motion.button>
-                    </Link>
-            
-                    <Link to="/watchlist" className="block">
-                        <motion.button
-                        variants={buttonVariants}
-                        whileHover="hover"
-                        whileTap="tap"
-                        className="flex items-center justify-center w-full p-4 space-x-3 text-lg font-medium transition-colors bg-purple-600 rounded-xl hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-900"
-                        >
-                        <Heart className="w-6 h-6" />
-                        <span>Your Watchlist</span>
-                        </motion.button>
-                    </Link>
+                    <div className="grid gap-6 mb-0 md:grid-cols-2">
+                        <Link to="/explore" className="block">
+                            <motion.button
+                            variants={buttonVariants}
+                            whileHover="hover"
+                            whileTap="tap"
+                            className="flex items-center justify-center w-full p-4 space-x-3 text-lg font-medium transition-colors bg-indigo-600 rounded-xl hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-900"
+                            >
+                            <PlayCircle className="w-6 h-6" />
+                            <span>View Recommendations</span>
+                            </motion.button>
+                        </Link>
+                
+                        <Link to="/watchlist" className="block">
+                            <motion.button
+                            variants={buttonVariants}
+                            whileHover="hover"
+                            whileTap="tap"
+                            className="flex items-center justify-center w-full p-4 space-x-3 text-lg font-medium transition-colors bg-purple-600 rounded-xl hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-900"
+                            >
+                            <Heart className="w-6 h-6" />
+                            <span>Your Watchlist</span>
+                            </motion.button>
+                        </Link>
                     </div>
                     <Link to="/onboarding" className="block">
-                    <motion.button
-                        variants={buttonVariants}
-                        whileHover="hover"
-                        whileTap="tap"
-                        className="flex items-center justify-center w-full p-4 space-x-3 text-lg font-medium transition-colors rounded-xl bg-white/20 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-purple-900"
-                    >
-                        <Settings className="w-6 h-6" />
-                        <span>Update Preferences</span>
-                    </motion.button>
+                        <motion.button
+                            variants={buttonVariants}
+                            whileHover="hover"
+                            whileTap="tap"
+                            className="flex items-center justify-center w-full p-4 space-x-3 text-lg font-medium transition-colors rounded-xl bg-white/20 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-purple-900"
+                        >
+                            <Settings className="w-6 h-6" />
+                            <span>Update Preferences</span>
+                        </motion.button>
                     </Link>
                 </motion.div>
             </div>
