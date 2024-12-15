@@ -10,7 +10,7 @@ export const Navbar = () => {
     useEffect(() => {
         const token = localStorage.getItem("token")
         setIsAuthenticated(!!token) // if token exists, user is authenticated
-    }, [location])
+    }, [location.pathname])
 
 
     const handleSignOut = () => {
@@ -28,7 +28,7 @@ export const Navbar = () => {
     }
     
     return (
-        <nav className="sticky top-0 z-50 flex items-center justify-between transition duration-300 ease-in-out w-full bg-[black] py-4 px-3 lg:px-6 lg:py-8">
+        <nav className="sticky top-0 z-50 flex items-center justify-between transition duration-300 ease-in-out w-full bg-[black] py-4 px-3 lg:px-4 lg:py-6">
             <div className="flex items-center justify-between">
                 {/* Website name */}
                 <Link to="/">
