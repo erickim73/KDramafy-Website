@@ -1,46 +1,21 @@
-# Getting Started with Create React App
+# KDramafy
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+KDramafy is a web-based recommendation system that helps users discover new K-dramas based on their preferences. The platform leverages advanced machine learning techniques to provide personalized recommendations and utilizes modern web technologies for a seamless user experience.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Personalized Recommendations**: Uses content-based filtering and embedding functions to suggest K-dramas tailored to user preferences.
+- **Web Scraping**: Employs BeautifulSoup and Selenium for collecting K-drama data from various sources.
+- **Database Management**: Utilizes MongoDB to store and manage K-drama data.
+- **Frontend**: Built with TypeScript and Tailwind CSS for a responsive and interactive user interface.
+- **Backend**: Developed using Python, hosting the recommendation engine and connecting to the frontend.
+- **Cloud Deployment**: Deployed on Google Cloud to ensure scalability and reliability.
 
-### `npm start`
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **TypeScript**: For building the frontend user interface.
+- **Tailwind CSS**: For designing responsive and modern UI components.
+- **Python**: For backend development and machine learning model implementation.
+- **BeautifulSoup & Selenium**: For web scraping K-drama data.
+- **MongoDB**: As the database for storing K-drama information.
+- **Google Cloud**: For hosting the backend services and ensuring scalability.
