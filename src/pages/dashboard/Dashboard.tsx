@@ -48,7 +48,7 @@ export const Dashboard = () => {
     }
 
   return (
-    <div className="h-screen text-white bg-[black] flex items-center justify-center mt-6 sm:mt-6 md:mt-6">
+    <div className="h-screen text-white bg-[black] flex items-center justify-center mt-12 sm:mt-6 md:mt-6">
         <WavyBackground className="max-w-4xl pb-40 mx-auto ">
             <div className="container max-w-4xl px-4 py-16 mx-auto space-y-12 ">
                 <div className = "bg-transparent rounded-2xl">

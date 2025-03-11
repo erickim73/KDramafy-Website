@@ -10,7 +10,6 @@ import {Home} from './pages/home/Home';
 import Watchlist from './pages/watchlist/Watchlist';
 import axios from 'axios'
 import {Toaster} from "react-hot-toast"
-import { UserContextProvider } from './context/userContext';
 import Dashboard from './pages/dashboard/Dashboard';
 import { WavyBackgroundDemo } from './pages/test/test';
 import SignUpPage from './pages/sign-up/signup2';
@@ -23,7 +22,6 @@ axios.defaults.baseURL = "https://kdramafyy-753476690747.us-central1.run.app/";
 function App() {
     return (
         <div className="App">
-        <UserContextProvider>
             <Router>
                 <Navbar/>
                 <Toaster position = "bottom-right" toastOptions = {{duration: 2000}}/>
@@ -52,7 +50,6 @@ function App() {
                     <Route path = "/test" element = {<SignUpPage/>}/>
                 </Routes>
             </Router>
-        </UserContextProvider>
         </div>
     );
 }

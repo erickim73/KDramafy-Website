@@ -56,7 +56,7 @@ export const Onboarding = () => {
         },
     }
 
-    const possibleGenres = ["Action", "Comedy", "Fantasy", "Historical", "Horror", "Mystery", "Romance", "Sci-Fi", "Thriller"]
+    const possibleGenres = ["Action", "Comedy", "Fantasy", "History", "Horror", "Mystery", "Romance", "Sci-Fi", "Thriller"]
 
  
 
@@ -310,12 +310,12 @@ export const Onboarding = () => {
                     </div>
                     {/* Genres */}
                     <div className="mb-8">
-                        <label className="block mb-2 text-xl font-semibold">Genres (Select up to 3)</label>
+                        <label className="block mb-2 text-xl font-semibold ">Genres (Select up to 3)</label>
                         <div className="grid grid-cols-3 gap-4">
                             {possibleGenres.map((genre) => (
                             <motion.div
                                 key={genre}
-                                className={`cursor-pointer rounded-lg px-4 py-4 text-center transition-all duration-200 ease-in-out font-semibold ${
+                                className={`cursor-pointer rounded-lg px-4 py-4 text-center h-16 flex items-center justify-center transition-all duration-100 ease-in-out font-semibold ${
                                 watch("genres").includes(genre)
                                     ? "bg-gradient-to-r from-[#6a5acd] via-[#836ab6] to-[#b386e4] text-white"
                                     : "bg-gray-700 text-gray-200 hover:bg-gray-600"
@@ -331,7 +331,7 @@ export const Onboarding = () => {
                                         setValue("genres", [...currentGenres, genre]);
                                     }
                                 }}
-                                whileHover={{ scale: 1.05 }}
+                                whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.95 }}
                             >
                                 {genre}
